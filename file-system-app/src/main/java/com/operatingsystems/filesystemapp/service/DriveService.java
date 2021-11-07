@@ -4,10 +4,10 @@ import com.operatingsystems.filesystemapp.model.ActionResult;
 
 public interface DriveService {
 
-    public ActionResult createDrive(final String username);
+    ActionResult createDrive(final String username);
 
-    public ActionResult getDrive(final String username);
+    ActionResult getDrive(final String username);
 
-    public ActionResult walkToAnotherFolder(final String directoryName);
+    ActionResult walkToAnotherFolder(final String directoryName);
 
 }

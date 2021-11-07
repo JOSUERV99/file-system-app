@@ -14,19 +14,19 @@ public class FileHandler {
 
     private static final String LOCAL_ROOT_DIRECTORY = FileSystemConstants.DEFAULT_FILE_SYSTEM_LOCATION;
 
-    public String getContentFromPlainTextFile(String filePath) {
+    String getContentFromPlainTextFile(String filePath) {
         return null;
     }
 
-    public boolean deleteFile(String filePath) {
+    boolean deleteFile(String filePath) {
         return false;
     }
 
-    public boolean moveFile(String filePath, String destinationFolder) {
+    boolean moveFile(String filePath, String destinationFolder) {
         return false;
     }
 
-    public boolean modifyContentOfPlainTextFile(String filePath, String newContent) {
+    boolean modifyContentOfPlainTextFile(String filePath, String newContent) {
         return false;
     }
 

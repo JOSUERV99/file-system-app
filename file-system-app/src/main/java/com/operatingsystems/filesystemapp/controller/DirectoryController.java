@@ -17,8 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/dir")
 public class DirectoryController {
 
+    private final DirectoryServiceImpl directoryService;
+
     @Autowired
-    private DirectoryServiceImpl directoryService;
+    public DirectoryController(DirectoryServiceImpl directoryService) {
+        this.directoryService = directoryService;
+    }
 
     @GetMapping(value = "/getDirectory/{username}", produces = {MediaType.APPLICATION_XML_VALUE})
     public Directory getDirectory(@PathVariable String username)

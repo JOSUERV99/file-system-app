@@ -18,8 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/drive")
 public class DriveController {
 
+    private final DriveServiceImpl driveService;
+
     @Autowired
-    private DriveServiceImpl driveService;
+    public DriveController(DriveServiceImpl driveService)
+    {
+        this.driveService = driveService;
+    }
 
     @GetMapping(value = "/getDrive/{username}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ActionResult getDirectory(@PathVariable String username)

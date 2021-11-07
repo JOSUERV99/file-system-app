@@ -1,6 +1,5 @@
 package com.operatingsystems.filesystemapp.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.operatingsystems.filesystemapp.constants.FileSystemConstants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +10,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.xml.bind.annotation.*;
 import java.util.Date;
 import java.util.UUID;

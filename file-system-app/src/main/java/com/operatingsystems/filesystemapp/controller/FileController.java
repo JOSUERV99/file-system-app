@@ -17,8 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/file")
 public class FileController {
 
+    private final FileSystemServiceImpl fileSystemService;
+
     @Autowired
-    private FileSystemServiceImpl fileSystemService;
+    public FileController(FileSystemServiceImpl fileSystemService)
+    {
+        this.fileSystemService = fileSystemService;
+    }
 
     @GetMapping(value = "/getFile/{username}/{fileId}", produces = {MediaType.APPLICATION_XML_VALUE})
     public PlainTextFile getFile(@PathVariable String username, @PathVariable String fileId) {

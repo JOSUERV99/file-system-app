@@ -12,7 +12,7 @@ import java.util.UUID;
 public class FileSystemServiceImpl implements FileSystemService {
 
     @Override
-    public String getFileContent(String username, String fileId) {
+    public String getFileContent(final String username, final String fileId) {
         return null;
     }
 
@@ -32,37 +32,37 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     @Override
-    public ActionResult removeFile(String username, String fileId) {
+    public ActionResult removeFile(final String username, final String fileId) {
         return null;
     }
 
     @Override
-    public ActionResult copyFromVirtualToReal(String fileId, String virtualDir, String realDir) {
+    public ActionResult copyFromVirtualToReal(final String fileId, final String virtualDir, final String realDir) {
         return null;
     }
 
     @Override
-    public ActionResult copyFromRealToVirtual(String fileId, String realDir, String virtualDir) {
+    public ActionResult copyFromRealToVirtual(final String fileId, final String realDir, final String virtualDir) {
         return null;
     }
 
     @Override
-    public ActionResult copyFromVirtualToVirtual(String fileId, String virtualDirOrigin, String virtualDirDestination) {
+    public ActionResult copyFromVirtualToVirtual(final String fileId, final String virtualDirOrigin, final String virtualDirDestination) {
         return null;
     }
 
     @Override
-    public ActionResult shareFile(String fileId, String buddyUserName) {
+    public ActionResult shareFile(final String fileId, final String buddyUserName) {
         return null;
     }
 
     @Override
-    public ActionResult createFile(String fileId, String extension, String content) {
+    public ActionResult createFile(final String fileId, final String extension, final String content) {
         return null;
     }
 
     @Override
-    public ActionResult modifyFileContent(String fileId, String newContent) {
+    public ActionResult modifyFileContent(final String fileId, final String newContent) {
         return null;
     }
 }
