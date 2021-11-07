@@ -5,10 +5,7 @@ import com.operatingsystems.filesystemapp.model.ActionResult;
 import com.operatingsystems.filesystemapp.service.DriveServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * DriveController
@@ -26,10 +23,10 @@ public class DriveController {
         this.driveService = driveService;
     }
 
-    @GetMapping(value = "/getDrive/{username}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ActionResult getDirectory(@PathVariable String username)
-    {
-        return this.driveService.getDrive(username);
-    }
 
+    @PostMapping(value = "/createDrive/{username}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ActionResult createDdrive(@PathVariable String username)
+    {
+        return this.driveService.createDrive(username);
+    }
 }

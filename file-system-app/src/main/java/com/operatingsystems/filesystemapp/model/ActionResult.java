@@ -25,7 +25,4 @@ public class ActionResult {
     @JsonProperty("message")
     private String message;
 
-    @JsonProperty("actionAuthor")
-    private String actionAuthor;
-
 }

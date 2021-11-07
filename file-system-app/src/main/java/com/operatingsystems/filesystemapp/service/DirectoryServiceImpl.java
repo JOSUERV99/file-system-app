@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @Component(value = "directoryService")
@@ -43,4 +45,5 @@ public class DirectoryServiceImpl implements DirectoryService {
 
         return Directory.instance().setFiles(files).setChildDirectory(directories).setName(username);
     }
+
 }

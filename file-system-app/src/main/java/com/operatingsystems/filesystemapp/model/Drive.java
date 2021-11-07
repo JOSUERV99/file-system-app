@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.*;
 @Data
 @NoArgsConstructor(staticName = "instance")
 @AllArgsConstructor(staticName = "of")
-@XmlRootElement(name = "drive")
+@XmlRootElement(name = "Drive")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Accessors(chain = true)
 public class Drive {
@@ -21,6 +21,9 @@ public class Drive {
     @XmlAttribute(name = "ownerName")
     private String ownerName;
 
-    @XmlElement(name = "rootDir")
+    @XmlAttribute(name = "rootDir")
     private Directory rootDir;
+
+    @XmlAttribute(name = "path")
+    private String path;
 }

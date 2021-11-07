@@ -14,7 +14,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor(staticName = "instance")
 @AllArgsConstructor(staticName = "of")
-@XmlRootElement(name = "directory")
+@XmlRootElement(name = "Directory")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Accessors(chain = true)
 public class Directory  {

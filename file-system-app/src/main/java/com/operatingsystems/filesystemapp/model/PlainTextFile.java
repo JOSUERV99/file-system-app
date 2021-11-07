@@ -18,7 +18,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor(staticName = "instance")
 @AllArgsConstructor(staticName = "of")
-@XmlRootElement(name = "plain-text-file")
+@XmlRootElement(name = "PlainTextFile")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Accessors(chain = true)
 public class PlainTextFile {
