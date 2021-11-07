@@ -1,7 +1,11 @@
 package com.operatingsystems.filesystemapp.handler;
 
+import ch.qos.logback.core.util.FileUtil;
 import com.operatingsystems.filesystemapp.constants.FileSystemConstants;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * FileHandler class
@@ -11,8 +15,6 @@ import org.springframework.stereotype.Component;
  */
 @Component(value = "fileHandler")
 public class FileHandler {
-
-    private static final String LOCAL_ROOT_DIRECTORY = FileSystemConstants.DEFAULT_FILE_SYSTEM_LOCATION;
 
     String getContentFromPlainTextFile(String filePath) {
         return null;
@@ -29,5 +31,6 @@ public class FileHandler {
     boolean modifyContentOfPlainTextFile(String filePath, String newContent) {
         return false;
     }
+
 
 }
