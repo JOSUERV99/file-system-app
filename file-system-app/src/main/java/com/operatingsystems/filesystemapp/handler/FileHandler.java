@@ -7,7 +7,13 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.BinaryOperator;
+import java.util.stream.Collectors;
 
 /**
  * FileHandler class
@@ -18,19 +24,29 @@ import java.util.List;
 @Component(value = "fileHandler")
 public class FileHandler {
 
-    String getContentFromPlainTextFile(String filePath) {
-        return null;
+    public static String getContentFromPlainTextFile(String fileName) {
+
+        List<String> lines = Collections.emptyList();
+
+        try {
+            lines =
+                    Files.readAllLines(Paths.get(fileName), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return lines.stream().collect(Collectors.joining("\n", "", "\n"));
     }
 
-    boolean deleteFile(String filePath) {
+    static boolean deleteFile(String filePath) {
         return false;
     }
 
-    boolean moveFile(String filePath, String destinationFolder) {
+    static boolean moveFile(String filePath, String destinationFolder) {
         return false;
     }
 
-    boolean modifyContentOfPlainTextFile(String filePath, String newContent) {
+    static boolean modifyContentOfPlainTextFile(String filePath, String newContent) {
         return false;
     }
 

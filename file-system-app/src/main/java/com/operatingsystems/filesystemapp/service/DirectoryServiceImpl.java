@@ -1,5 +1,10 @@
 package com.operatingsystems.filesystemapp.service;
 
+import com.operatingsystems.filesystemapp.constants.FileSystemConstants;
+import com.operatingsystems.filesystemapp.handler.FileHandler;
+import com.operatingsystems.filesystemapp.handler.FileUtils;
+import com.operatingsystems.filesystemapp.handler.JSONUtils;
+import com.operatingsystems.filesystemapp.handler.ModelUtils;
 import com.operatingsystems.filesystemapp.model.Directory;
 import com.operatingsystems.filesystemapp.model.PlainTextFile;
 import org.springframework.stereotype.Component;
@@ -16,34 +21,35 @@ public class DirectoryServiceImpl implements DirectoryService {
     @Override
     public Directory getDirectory(String username) {
 
-        // TESTING
-        // TODO: delete this testing content when we implement this function
-        var files =
-                Arrays.asList(
-                        PlainTextFile.instance()
-                                .setName("helloWorld1")
-                                .setBytesSize(1024L)
-                                .setParentDir("root"),
+        String fileName = String.format("%s/%s.%s", FileSystemConstants.DEFAULT_DRIVES_LOCATION, username, FileSystemConstants.DEFAULT_DRIVE_EXTENSION);
 
-                        PlainTextFile.instance()
-                                .setName("helloWorld2")
-                                .setBytesSize(2028L)
-                                .setParentDir("root"),
+        System.out.println(fileName);
+        if (!FileUtils.fileExists(fileName)) return null;
 
-                        PlainTextFile.instance()
-                                .setName("helloWorld3")
-                                .setBytesSize(4096L)
-                                .setParentDir("root")
-                );
+        String jsonContent = FileHandler.getContentFromPlainTextFile(fileName);
+        var mappedDir = JSONUtils.castJsonStringToHashMap(jsonContent);
+        var dir = ModelUtils.mapToDirectoryObj(mappedDir);
 
-        var directories =
-                Arrays.asList(
-                        Directory.instance().setName("dir1"),
-                        Directory.instance().setName("dir2"),
-                        Directory.instance().setName("dir3"),
-                        Directory.instance().setName("dir4").setFiles(files));
+        System.out.println(dir);
 
-        return Directory.instance().setFiles(files).setChildDirectory(directories).setName(username);
+        return dir;
     }
+
+    @Override
+    public Directory createDirectory(String username) {
+
+        var fullPath = String.format("%s/%s.%s",FileSystemConstants.DEFAULT_DRIVES_LOCATION, username, FileSystemConstants.DEFAULT_DRIVE_EXTENSION);
+        var dir = Directory.instance().setName(username).setFiles(List.of()).setChildrenDirectories(List.of()).setId(UUID.randomUUID().toString());
+
+        // create the root dir for files
+        String filesDir = String.format("%s/%s", FileSystemConstants.DEFAULT_FILE_SYSTEM_LOCATION, username);
+        FileUtils.createDir(filesDir);
+
+        String jsonContent = JSONUtils.mapObjectToJsonString(dir);
+        boolean success = FileUtils.createFile(FileSystemConstants.DEFAULT_DRIVES_LOCATION,username, FileSystemConstants.DEFAULT_DRIVE_EXTENSION, jsonContent);
+
+        return dir;
+    }
+
 
 }

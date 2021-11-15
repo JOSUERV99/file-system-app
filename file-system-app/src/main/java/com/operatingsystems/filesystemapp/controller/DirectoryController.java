@@ -25,7 +25,7 @@ public class DirectoryController {
         this.directoryService = directoryService;
     }
 
-    @GetMapping(value = "/getDirectory/{username}", produces = {MediaType.APPLICATION_XML_VALUE})
+    @GetMapping(value = "/getDirectory/{username}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Directory getDirectory(@PathVariable String username)
     {
         return this.directoryService.getDirectory(username);

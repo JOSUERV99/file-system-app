@@ -25,4 +25,10 @@ public class ActionResult {
     @JsonProperty("message")
     private String message;
 
+    @JsonProperty("metadata")
+    private String metadata;
+
+    @JsonProperty("object")
+    private Object object;
+
 }

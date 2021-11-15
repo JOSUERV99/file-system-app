@@ -23,9 +23,11 @@ public class DriveController {
         this.driveService = driveService;
     }
 
-
     @PostMapping(value = "/createDrive/{username}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ActionResult createDdrive(@PathVariable String username)
+    public ActionResult createDrive(@PathVariable String username) {return this.driveService.createDrive(username);}
+
+    @GetMapping(value = "/getDrive/{username}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ActionResult getDrive(@PathVariable String username)
     {
         return this.driveService.createDrive(username);
     }

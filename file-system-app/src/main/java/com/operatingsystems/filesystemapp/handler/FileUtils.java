@@ -6,14 +6,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.operatingsystems.filesystemapp.constants.FileSystemConstants;
-import com.operatingsystems.filesystemapp.model.Directory;
-import com.operatingsystems.filesystemapp.model.Drive;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 public class FileUtils {
 
@@ -44,11 +41,6 @@ public class FileUtils {
         return false;
     }
 
-    public static Directory createBasicDir(String driveName) {
-        return Directory.instance()
-                .setName(driveName)
-                .setDirId(UUID.randomUUID());
-    }
 
     public static String mapObjectToXMLString(Object input) {
         JacksonXmlModule xmlModule = new JacksonXmlModule();
@@ -63,5 +55,10 @@ public class FileUtils {
         }
 
         return null;
+    }
+
+    public static boolean fileExists(String filename) {
+        File file = new File(filename);
+        return file.isFile();
     }
 }

@@ -1,54 +1,45 @@
 package com.operatingsystems.filesystemapp.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.operatingsystems.filesystemapp.constants.FileSystemConstants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.xml.bind.annotation.*;
+import java.time.LocalTime;
 import java.util.Date;
-import java.util.UUID;
 
 @Builder
 @Data
 @NoArgsConstructor(staticName = "instance")
 @AllArgsConstructor(staticName = "of")
-@XmlRootElement(name = "PlainTextFile")
-@XmlAccessorType(XmlAccessType.FIELD)
 @Accessors(chain = true)
 public class PlainTextFile {
 
-    // to avoid filename detection we use a unique ID to find it without problems
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @XmlAttribute(name = "fileId")
-    private UUID fileId;
+    @JsonProperty("id")
+    private String id;
 
-    @XmlAttribute(name = "name")
+    @JsonProperty("type")
+    @Builder.Default
+    private String type = "plainTextFile";
+
+    @JsonProperty("name")
     private String name;
 
-    @XmlAttribute(name = "extension")
+    @JsonProperty("extension")
     @Builder.Default
     private String extension = FileSystemConstants.DEFAULT_FILE_EXTENSION;
 
-    @XmlAttribute(name = "bytesSize")
-    private Long bytesSize;
+    @JsonProperty("bytesSize")
+    private String bytesSize;
 
-    @XmlElement(name = "createdDate")
-    private Date createdDate;
+    @JsonProperty("createdDate")
+    @Builder.Default
+    private String createdDate = LocalTime.now().toString();
 
-    @XmlElement(name = "modifiedDate")
-    private Date modifiedDate;
-
-    @XmlAttribute(name = "parentDir")
-    private String parentDir;
+    @JsonProperty("modifiedDate")
+    @Builder.Default
+    private String modifiedDate = null;
 }

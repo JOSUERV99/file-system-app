@@ -1,29 +1,28 @@
 package com.operatingsystems.filesystemapp.model;
 
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import lombok.experimental.Accessors;
-
-import javax.xml.bind.annotation.*;
 
 @Builder
 @Data
 @NoArgsConstructor(staticName = "instance")
 @AllArgsConstructor(staticName = "of")
-@XmlRootElement(name = "Drive")
-@XmlAccessorType(XmlAccessType.FIELD)
 @Accessors(chain = true)
 public class Drive {
 
-    @XmlAttribute(name = "ownerName")
-    private String ownerName;
+    @JsonProperty("id")
+    private String id;
 
-    @XmlAttribute(name = "rootDir")
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("owner")
+    private String owner;
+
+    @JsonProperty("currentDir")
+    private String currentDir;
+
+    @JsonProperty("rootDir")
     private Directory rootDir;
-
-    @XmlAttribute(name = "path")
-    private String path;
 }

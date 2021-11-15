@@ -1,23 +1,29 @@
 package com.operatingsystems.filesystemapp.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.operatingsystems.filesystemapp.constants.FileSystemConstants;
 import com.operatingsystems.filesystemapp.handler.FileHandler;
 import com.operatingsystems.filesystemapp.handler.FileUtils;
+import com.operatingsystems.filesystemapp.handler.JSONUtils;
+import com.operatingsystems.filesystemapp.handler.ModelUtils;
 import com.operatingsystems.filesystemapp.model.ActionResult;
-import com.operatingsystems.filesystemapp.model.Directory;
 import com.operatingsystems.filesystemapp.model.Drive;
-import com.sun.xml.bind.v2.runtime.XMLSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
 @Component(value = "driveService")
 public class DriveServiceImpl implements DriveService {
+
+    private final DirectoryServiceImpl directoryService;
+
+    @Autowired
+    public DriveServiceImpl(DirectoryServiceImpl directoryService)
+    {
+        this.directoryService = directoryService;
+    }
 
     /**
      * Create the drive, generate the xml file and instantiate an empty dir for the user
@@ -27,29 +33,23 @@ public class DriveServiceImpl implements DriveService {
     @Override
     public ActionResult createDrive(final String driveName) {
 
-        var filename = String.format("%s/%s.%s",FileSystemConstants.DEFAULT_DRIVES_LOCATION, driveName, FileSystemConstants.DEFAULT_DRIVE_EXTENSION);
+        var dir = directoryService.createDirectory(driveName);
+        var drive = Drive.instance().setRootDir(dir).setName(driveName).setId(UUID.randomUUID().toString()).setOwner(driveName);
 
-        var dir = FileUtils.createBasicDir(driveName);
-        var drive =
-            Drive.instance()
-                .setOwnerName(driveName)
-                .setRootDir(dir).setPath(filename);
+        String jsonContent = JSONUtils.mapObjectToJsonString(drive);
+        boolean success = FileUtils.createFile(FileSystemConstants.DEFAULT_DRIVES_LOCATION,driveName, FileSystemConstants.DEFAULT_DRIVE_EXTENSION, jsonContent);
 
-        FileUtils.createDir(String.format("%s/%s",FileSystemConstants.DEFAULT_DRIVES_LOCATION, driveName));
-
-        var xmlContent = FileUtils.mapObjectToXMLString(drive);
-
-        // create the drive in xml format in the drives folder
-        var success = FileUtils.createFile(FileSystemConstants.DEFAULT_DRIVES_LOCATION, driveName, FileSystemConstants.DEFAULT_DRIVE_EXTENSION, xmlContent);
-
-        return ActionResult.instance().setSuccess(success).setMessage(success ? xmlContent : "There is an error creating the drive");
+        return ActionResult.instance().setSuccess(success).setMetadata(drive.getId()).setObject(drive).setMessage(success ? jsonContent : "There is an error creating the drive");
     }
 
     @Override
     public ActionResult getDrive(String username) {
-        // TESTING
-        // TODO: delete this testing content when we implement this function
-        return ActionResult.instance().setSuccess(false).setMessage("Error trying to get your drive");
+
+        String jsonContent = FileHandler.getContentFromPlainTextFile(String.format("%s/%s.%s", FileSystemConstants.DEFAULT_FILE_SYSTEM_LOCATION, username, FileSystemConstants.DEFAULT_DRIVE_EXTENSION));
+        var mappedDrive = JSONUtils.castJsonStringToHashMap(jsonContent);
+        var drive = ModelUtils.mapToDrive(mappedDrive);
+
+        return ActionResult.instance().setSuccess(true).setObject(drive).setMetadata(jsonContent);
     }
 
     @Override

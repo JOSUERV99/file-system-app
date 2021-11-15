@@ -18,17 +18,15 @@ public class FileSystemServiceImpl implements FileSystemService {
 
     @Override
     public PlainTextFile getFileProperties(String username, String fileId) {
-        // TESTING
-        // TODO: delete this testing content when we implement this function
-        var file =
-                PlainTextFile.instance()
-                        .setName("helloWorld")
-                        .setBytesSize(1024L)
-                        .setParentDir("root")
-                        .setFileId(UUID.randomUUID());
+//        // TESTING
+//        // TODO: delete this testing content when we implement this function
+//        var file =
+//                PlainTextFile.instance()
+//                        .setName("helloWorld")
+//                        .setBytesSize(1024L)
+//                        .setId(UUID.randomUUID().toString());
 
-        // UUID.fromString(fileId).equals(file.getName()) ? file : null;
-        return file;
+        return null;
     }
 
     @Override
