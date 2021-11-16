@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -37,9 +38,9 @@ public class PlainTextFile {
 
     @JsonProperty("createdDate")
     @Builder.Default
-    private String createdDate = LocalTime.now().toString();
+    private String createdDate = LocalDateTime.now().toString();
 
-    @JsonProperty("modifiedDate")
+    @JsonProperty("content")
     @Builder.Default
-    private String modifiedDate = null;
+    private String content = "";
 }
