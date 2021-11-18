@@ -12,4 +12,5 @@ public interface DriveService {
 
     ActionResult walkToAnotherFolder(final String directoryName);
 
+    ActionResult getSharedFiles(final String username);
 }

@@ -30,9 +30,4 @@ public class FileSystemController {
     public ActionResult shareFile(@PathVariable String buddyUserName,@PathVariable String ownerUserName, @PathVariable String fileId) {
         return this.fileSystemService.shareFile(fileId, buddyUserName , ownerUserName);
     }
-
-    @GetMapping(value = "/getSharedFiles/{userName}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ActionResult getSharedWithMeFiles(@PathVariable String userName) {
-        return this.fileSystemService.getSharedFiles(userName);
-    }
 }

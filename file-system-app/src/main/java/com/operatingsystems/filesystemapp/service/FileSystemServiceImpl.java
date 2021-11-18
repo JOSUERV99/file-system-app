@@ -107,29 +107,10 @@ public class FileSystemServiceImpl implements FileSystemService {
     @Override
     public ActionResult shareFile(final String fileId, final String buddyUserName, final String ownerUserName) {
         var drive = JSONUtils.getFullDrive(buddyUserName);
-        FileReference newFileReference = FileReference.instance().setFileId(fileId).setOwnerId(ownerUserName);
+        FileReference newFileReference = FileReference.instance().setFileId(fileId).setOwnerUsername(ownerUserName);
         drive.getSharedReferences().add(newFileReference);
-        return ActionResult.instance().setSuccess(false).setObject(null);
-    }
-
-    @Override
-    public ActionResult getSharedFiles(final String username) {
-        var drive = JSONUtils.getFullDrive(username);
-        Directory newsharedWithMeRoot = Directory.instance().setId(UUID.randomUUID().toString()).setName("sharedWithMeRoot");
-        for(FileReference fileReference : drive.getSharedReferences()){
-            var ownerDrive = JSONUtils.getFullDrive(fileReference.getOwnerId());
-            Object fileToShared = searchFile(ownerDrive.getRootDir(), fileReference.getFileId());
-            if(fileToShared != null) {
-                if (fileToShared instanceof Directory) {
-                    newsharedWithMeRoot.getChildrenDirectories().add((Directory) fileToShared);
-                } else if (fileToShared instanceof PlainTextFile) {
-                    newsharedWithMeRoot.getFiles().add((PlainTextFile) fileToShared);
-                }
-                drive.setSharedWithMeRoot(newsharedWithMeRoot);
-                JSONUtils.saveDriveOrReplace(drive);
-            }
-        }
-        return ActionResult.instance().setSuccess(true).setObject(drive.getSharedWithMeRoot());
+        JSONUtils.saveDriveOrReplace(drive);
+        return ActionResult.instance().setSuccess(true).setObject(drive.getSharedReferences());
     }
 
     @Override

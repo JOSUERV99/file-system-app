@@ -2,6 +2,7 @@ package com.operatingsystems.filesystemapp.handler;
 
 import com.operatingsystems.filesystemapp.model.Directory;
 import com.operatingsystems.filesystemapp.model.Drive;
+import com.operatingsystems.filesystemapp.model.FileReference;
 import com.operatingsystems.filesystemapp.model.PlainTextFile;
 
 import java.util.List;
@@ -10,11 +11,17 @@ import java.util.stream.Collectors;
 
 public class ModelUtils {
 
+    public static FileReference mapToFileReferenceObj(Map<String, Object> mappedObj){
+        var fileReference = FileReference.instance();
+        fileReference.setFileId((String) mappedObj.get("fileId"));
+        fileReference.setOwnerUsername((String) mappedObj.get("ownerUsername"));
+        return fileReference;
+    }
     public static Directory mapToDirectoryObj(Map<String, Object> mappedObj)
     {
         var directory = Directory.instance();
 
-        System.out.println(mappedObj);
+//        System.out.println(mappedObj);
 
         directory.setName((String) mappedObj.get("name"));
         directory.setType((String) mappedObj.get("type"));
@@ -64,7 +71,7 @@ public class ModelUtils {
     {
         var drive = Drive.instance();
 
-        System.out.println(mappedObj);
+//        System.out.println(mappedObj);
 
         drive.setName((String) mappedObj.get("name"));
         drive.setPassword((String) mappedObj.get("password"));
@@ -72,6 +79,18 @@ public class ModelUtils {
         drive.setCurrentDir((String) mappedObj.get("currentDir"));
         drive.setRootDir(  mapToDirectoryObj  ((Map<String,Object>) mappedObj.get("rootDir")));
         drive.setOwner((String) mappedObj.get("owner"));
+        drive.setSharedWithMeDir(  mapToDirectoryObj  ((Map<String,Object>) mappedObj.get("sharedWithMeDir")));
+
+        if (mappedObj.get("sharedReferences") instanceof List<?>)
+            drive.setSharedReferences( ((List<?>) mappedObj.get("sharedReferences")).stream().map(element ->
+            {
+                if (element instanceof Map<?,?>)
+                {
+                    var mappedElement = (Map<String, Object>) element;
+                    return mapToFileReferenceObj(mappedElement);
+                }
+                return null;
+            }).filter(element -> element != null).collect(Collectors.toList()));
 
         return drive;
     }

@@ -18,6 +18,6 @@ public class FileReference {
     @JsonProperty("fileId")
     private String fileId;
 
-    @JsonProperty("ownerId")
-    private String ownerId;
+    @JsonProperty("ownerUsername")
+    private String ownerUsername;
 }

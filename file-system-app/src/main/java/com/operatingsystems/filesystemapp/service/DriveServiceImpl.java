@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,11 +19,12 @@ import java.util.UUID;
 public class DriveServiceImpl implements DriveService {
 
     private final DirectoryServiceImpl directoryService;
+    private final FileSystemServiceImpl fileSystemServiceImpl;
 
     @Autowired
-    public DriveServiceImpl(DirectoryServiceImpl directoryService)
-    {
+    public DriveServiceImpl(DirectoryServiceImpl directoryService,FileSystemServiceImpl fileSystemServiceImpl) {
         this.directoryService = directoryService;
+        this.fileSystemServiceImpl = fileSystemServiceImpl;
     }
 
     /**
@@ -34,7 +36,8 @@ public class DriveServiceImpl implements DriveService {
     public ActionResult createDrive(final String driveName, final String password) {
 
         var dir = directoryService.createDirectory(driveName);
-        var drive = Drive.instance().setRootDir(dir).setName(driveName).setPassword(password).setId(UUID.randomUUID().toString()).setOwner(driveName).setCurrentDir("/");
+        var sharedWithMeDir = directoryService.createDirectory("sharedWithMeDir");
+        var drive = Drive.instance().setRootDir(dir).setName(driveName).setPassword(password).setId(UUID.randomUUID().toString()).setOwner(driveName).setCurrentDir("/").setSharedReferences(List.of()).setSharedWithMeDir(sharedWithMeDir);
 
         String jsonContent = JSONUtils.mapObjectToJsonString(drive);
 
@@ -63,4 +66,26 @@ public class DriveServiceImpl implements DriveService {
     public ActionResult walkToAnotherFolder(String directoryName) {
         return null;
     }
+
+    @Override
+    public ActionResult getSharedFiles(final String username) {
+        var drive = JSONUtils.getFullDrive(username);
+        List<Directory> newChildrenDirectories = new ArrayList();
+        List<PlainTextFile> newFiles = new ArrayList();
+        for(FileReference fileReference : drive.getSharedReferences()){
+            var ownerDrive = JSONUtils.getFullDrive(fileReference.getOwnerUsername());
+            Object fileToShared = fileSystemServiceImpl.searchFile(ownerDrive.getRootDir(), fileReference.getFileId());
+            if(fileToShared != null) {
+                if (fileToShared instanceof Directory) {
+                    newChildrenDirectories.add((Directory) fileToShared);
+                } else if (fileToShared instanceof PlainTextFile) {
+                    newFiles.add((PlainTextFile) fileToShared);
+                }
+            }
+        }
+        drive.getSharedWithMeDir().setFiles(newFiles).setChildrenDirectories(newChildrenDirectories);
+        JSONUtils.saveDriveOrReplace(drive);
+        return ActionResult.instance().setSuccess(true).setObject(drive.getSharedWithMeDir());
+    }
+
 }

@@ -35,4 +35,9 @@ public class DriveController {
     {
         return this.driveService.getDrive(username, passwordWrapper.getPassword());
     }
+
+    @GetMapping(value = "/getSharedFiles/{userName}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ActionResult getSharedWithMeFiles(@PathVariable String userName) {
+        return this.driveService.getSharedFiles(userName);
+    }
 }

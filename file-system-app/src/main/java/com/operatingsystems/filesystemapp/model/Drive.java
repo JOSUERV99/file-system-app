@@ -32,8 +32,9 @@ public class Drive {
     private Directory rootDir;
 
     @JsonProperty("sharedReferences")
+    @Builder.Default
     private List<FileReference> sharedReferences = List.of();
 
-    @JsonProperty("sharedWithMeRoot")
-    private Directory sharedWithMeRoot;
+    @JsonProperty("sharedWithMeDir")
+    private Directory sharedWithMeDir;
 }
