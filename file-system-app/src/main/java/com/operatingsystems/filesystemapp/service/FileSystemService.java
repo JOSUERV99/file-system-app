@@ -10,7 +10,7 @@ public interface FileSystemService {
 
     String getFileContent(final String username, final String fileId);
 
-    PlainTextFile getFileProperties(final String username, final String fileId);
+    ActionResult getFileProperties(final String username, final String fileId);
 
     ActionResult removeFile(final String username, final String fileId);
 

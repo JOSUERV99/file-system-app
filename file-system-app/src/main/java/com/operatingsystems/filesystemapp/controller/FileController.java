@@ -24,7 +24,7 @@ public class FileController {
     }
 
     @GetMapping(value = "/getFile/{username}/{fileId}", produces = {MediaType.APPLICATION_XML_VALUE})
-    public PlainTextFile getFile(@PathVariable String username, @PathVariable String fileId) {
+    public ActionResult getFile(@PathVariable String username, @PathVariable String fileId) {
         return this.fileSystemService.getFileProperties(username, fileId);
     }
 

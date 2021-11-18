@@ -25,16 +25,10 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     @Override
-    public PlainTextFile getFileProperties(String username, String fileId) {
-//        // TESTING
-//        // TODO: delete this testing content when we implement this function
-//        var file =
-//                PlainTextFile.instance()
-//                        .setName("helloWorld")
-//                        .setBytesSize(1024L)
-//                        .setId(UUID.randomUUID().toString());
-
-        return null;
+    public ActionResult getFileProperties(String username, String fileId) {
+        Object fileToReturn = getFile(username,fileId);
+        if(fileToReturn instanceof PlainTextFile) return ActionResult.instance().setSuccess(true).setObject(fileToReturn);
+        return ActionResult.instance().setSuccess(false).setObject(fileToReturn);
     }
 
     @Override
