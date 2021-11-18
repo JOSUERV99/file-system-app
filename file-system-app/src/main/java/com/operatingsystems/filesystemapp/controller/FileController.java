@@ -28,10 +28,14 @@ public class FileController {
         return this.fileSystemService.getFileProperties(username, fileId);
     }
 
-    @PostMapping("/createFile")
-    public ActionResult createFile(@RequestBody PlainTextFile newFile) {
+    @PostMapping("/createFile/{username}/{DirId}")
+    public ActionResult createFile(@PathVariable String username, @PathVariable String DirId, @RequestBody PlainTextFile newFile) {
+        return this.fileSystemService.createFile(username, DirId, newFile);
+    }
 
-        return this.fileSystemService.createFile(newFile);
+    @PostMapping("/modifyFileContent/{username}/{fileId}")
+    public ActionResult modifyFileContent(@PathVariable String username,@PathVariable String fileId, @RequestBody PlainTextFile newModifiedFile) {
+        return this.fileSystemService.modifyFileContent(username,fileId , newModifiedFile);
     }
 
 }

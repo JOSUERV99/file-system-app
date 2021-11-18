@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.hibernate.sql.OracleJoinFragment;
 
 
 /**
@@ -26,7 +27,7 @@ public class ActionResult {
     private String message;
 
     @JsonProperty("metadata")
-    private String metadata;
+    private Object metadata;
 
     @JsonProperty("object")
     private Object object;

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @Builder
 @Data
 @NoArgsConstructor(staticName = "instance")
@@ -28,4 +30,7 @@ public class Drive {
 
     @JsonProperty("rootDir")
     private Directory rootDir;
+
+    @JsonProperty("sharedWithMeFiles")
+    private List<FileReference> sharedWithMeFiles = List.of();
 }

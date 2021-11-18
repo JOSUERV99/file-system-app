@@ -13,17 +13,21 @@ public interface FileSystemService {
 
     ActionResult removeFile(final String username, final String fileId);
 
+    Object getFile(final String username, final String fileId);
+
     ActionResult copyFromVirtualToReal(final String fileId, final String virtualDir, final String realDir);
 
     ActionResult copyFromRealToVirtual(final String fileId, final String realDir, final String virtualDir);
 
     ActionResult copyFromVirtualToVirtual(final String fileId, final String virtualDirOrigin, final String virtualDirDestination);
 
-    ActionResult shareFile(final String fileId, final String buddyUserName);
+    ActionResult shareFile(final String fileId, final String buddyUserName, final String ownerUserName);
 
-    ActionResult createFile(@RequestBody PlainTextFile newFile);
+    ActionResult getSharedFiles(final String username);
 
-    ActionResult modifyFileContent(final String fileId, final String newContent);
+    ActionResult createFile(final String username, final String dirId, final PlainTextFile newFile);
+
+    ActionResult modifyFileContent(final String username, final String fileId, PlainTextFile newFileModified);
 
 
 }
