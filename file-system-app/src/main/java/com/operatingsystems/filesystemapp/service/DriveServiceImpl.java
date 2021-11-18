@@ -5,10 +5,7 @@ import com.operatingsystems.filesystemapp.handler.FileHandler;
 import com.operatingsystems.filesystemapp.handler.FileUtils;
 import com.operatingsystems.filesystemapp.handler.JSONUtils;
 import com.operatingsystems.filesystemapp.handler.ModelUtils;
-import com.operatingsystems.filesystemapp.model.ActionResult;
-import com.operatingsystems.filesystemapp.model.Directory;
-import com.operatingsystems.filesystemapp.model.Drive;
-import com.operatingsystems.filesystemapp.model.PlainTextFile;
+import com.operatingsystems.filesystemapp.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -34,10 +31,10 @@ public class DriveServiceImpl implements DriveService {
      * @return ActionResult, with result of the drive creation process
      */
     @Override
-    public ActionResult createDrive(final String driveName) {
+    public ActionResult createDrive(final String driveName, final String password) {
 
         var dir = directoryService.createDirectory(driveName);
-        var drive = Drive.instance().setRootDir(dir).setName(driveName).setId(UUID.randomUUID().toString()).setOwner(driveName).setCurrentDir("/");
+        var drive = Drive.instance().setRootDir(dir).setName(driveName).setPassword(password).setId(UUID.randomUUID().toString()).setOwner(driveName).setCurrentDir("/");
 
         String jsonContent = JSONUtils.mapObjectToJsonString(drive);
 
@@ -52,9 +49,17 @@ public class DriveServiceImpl implements DriveService {
     }
 
     @Override
-    public ActionResult getDrive(String username) {
+    public ActionResult getDrive(String username, String password) {
         var drive = JSONUtils.getFullDrive(username);
-        return ActionResult.instance().setSuccess(true).setObject(drive);
+        System.out.println(password);
+        String validPassword = drive.getPassword();
+        System.out.println(validPassword);
+        if (validPassword.equals(password)) {
+            return ActionResult.instance().setMessage("Login Successful").setSuccess(true).setObject(drive);
+        } else {
+            System.out.println("Mamando");
+            return ActionResult.instance().setMessage("The password is not correct").setSuccess(false);
+        }
     }
 
     @Override

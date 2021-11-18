@@ -17,6 +17,9 @@ public class Drive {
     @JsonProperty("name")
     private String name;
 
+    @JsonProperty("password")
+    private String password;
+
     @JsonProperty("owner")
     private String owner;
 

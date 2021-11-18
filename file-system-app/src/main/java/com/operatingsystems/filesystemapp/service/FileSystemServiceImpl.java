@@ -63,7 +63,7 @@ public class FileSystemServiceImpl implements FileSystemService {
     @Override
     public ActionResult createFile(final PlainTextFile newFile) {
         newFile.setId(UUID.randomUUID().toString());
-        return ActionResult.instance().setSuccess(true).setObject(newFile);
+        return ActionResult.instance().setSuccess(true).setMessage("").setObject(newFile);
     }
 
     @Override

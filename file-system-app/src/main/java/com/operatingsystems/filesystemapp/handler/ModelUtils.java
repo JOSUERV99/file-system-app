@@ -66,6 +66,7 @@ public class ModelUtils {
         System.out.println(mappedObj);
 
         drive.setName((String) mappedObj.get("name"));
+        drive.setPassword((String) mappedObj.get("password"));
         drive.setId((String) mappedObj.get("id"));
         drive.setCurrentDir((String) mappedObj.get("currentDir"));
         drive.setRootDir(  mapToDirectoryObj  ((Map<String,Object>) mappedObj.get("rootDir")));
