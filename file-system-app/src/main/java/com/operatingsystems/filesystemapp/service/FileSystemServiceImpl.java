@@ -122,13 +122,23 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     @Override
-    public ActionResult createFile(final PlainTextFile newFile) {
+    public ActionResult createFile(final String username, final String dirId, final PlainTextFile newFile) {
         newFile.setId(UUID.randomUUID().toString());
-        return ActionResult.instance().setSuccess(true).setObject(newFile);
+        Object dirToInsert = getFile(username, dirId);
+        if (dirToInsert instanceof Directory){
+            ((Directory) dirToInsert).getFiles().add(newFile);
+            return ActionResult.instance().setSuccess(true).setObject(newFile);
+        }
+        return ActionResult.instance().setSuccess(false).setObject(dirToInsert);
     }
 
     @Override
-    public ActionResult modifyFileContent(final String fileId, final String newContent) {
-        return null;
+    public ActionResult modifyFileContent(final String username, final String fileId, PlainTextFile newFileModified) {
+        Object fileToChange = getFile(username, fileId);
+        if (fileToChange instanceof PlainTextFile){
+            ((PlainTextFile) fileToChange).setContent(newFileModified.getContent());
+            return ActionResult.instance().setSuccess(true).setObject(fileToChange);
+        }
+        return ActionResult.instance().setSuccess(false).setObject(fileToChange);
     }
 }

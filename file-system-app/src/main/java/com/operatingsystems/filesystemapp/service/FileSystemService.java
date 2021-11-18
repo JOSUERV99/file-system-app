@@ -25,9 +25,9 @@ public interface FileSystemService {
 
     ActionResult getSharedFiles(final String username);
 
-    ActionResult createFile(@RequestBody PlainTextFile newFile);
+    ActionResult createFile(final String username, final String dirId, final PlainTextFile newFile);
 
-    ActionResult modifyFileContent(final String fileId, final String newContent);
+    ActionResult modifyFileContent(final String username, final String fileId, PlainTextFile newFileModified);
 
 
 }
