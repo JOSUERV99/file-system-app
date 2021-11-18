@@ -117,8 +117,20 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     @Override
-    public ActionResult copyFromVirtualToVirtual(final String fileId, final String virtualDirOrigin, final String virtualDirDestination) {
-        return null;
+    public ActionResult copyFromVirtualToVirtual(final String username, final String fileId, final String virtualDirDestination) {
+        var drive = JSONUtils.getFullDrive(username);
+        Directory newDir = ((Directory)searchFile(drive.getRootDir(), virtualDirDestination));
+        Object fileToMove = searchFile(drive.getRootDir(), fileId);
+        if(newDir != null && fileToMove != null){
+            if(fileToMove instanceof Directory){
+                newDir.getChildrenDirectories().add((Directory)fileToMove);
+            }else if(fileToMove instanceof PlainTextFile){
+                newDir.getFiles().add((PlainTextFile)fileToMove);
+            }
+            JSONUtils.saveDriveOrReplace(drive);
+            return ActionResult.instance().setSuccess(true).setObject(newDir);
+        }
+        return ActionResult.instance().setSuccess(false).setObject(null);
     }
 
     @Override
@@ -162,10 +174,6 @@ public class FileSystemServiceImpl implements FileSystemService {
         Directory oldDir = ((Directory)searchFile(drive.getRootDir(), oldDirId));
         Directory newDir = ((Directory)searchFile(drive.getRootDir(), newDirId));
         Object fileToMove = searchFile(drive.getRootDir(), fileId);
-        System.out.println("============");
-        System.out.println(fileToMove);
-        System.out.println(oldDir);
-        System.out.println(newDir);
         if(oldDir != null && newDir != null && fileToMove != null){
             if(fileToMove instanceof Directory){
                 newDir.getChildrenDirectories().add((Directory)fileToMove);
