@@ -1,6 +1,7 @@
 package com.operatingsystems.filesystemapp.service;
 
 import com.operatingsystems.filesystemapp.model.ActionResult;
+import com.operatingsystems.filesystemapp.model.Directory;
 import com.operatingsystems.filesystemapp.model.PlainTextFile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,8 @@ public interface FileSystemService {
     ActionResult removeFile(final String username, final String fileId);
 
     Object getFile(final String username, final String fileId);
+
+    Object searchFile(Directory dir, String fileId);
 
     ActionResult copyFromVirtualToReal(final String fileId, final String virtualDir, final String realDir);
 
