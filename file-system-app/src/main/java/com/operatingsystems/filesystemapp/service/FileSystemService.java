@@ -13,6 +13,8 @@ public interface FileSystemService {
 
     ActionResult removeFile(final String username, final String fileId);
 
+    Object getFile(final String username, final String fileId);
+
     ActionResult copyFromVirtualToReal(final String fileId, final String virtualDir, final String realDir);
 
     ActionResult copyFromRealToVirtual(final String fileId, final String realDir, final String virtualDir);

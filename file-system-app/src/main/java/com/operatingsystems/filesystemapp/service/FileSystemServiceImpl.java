@@ -2,6 +2,7 @@ package com.operatingsystems.filesystemapp.service;
 
 import com.operatingsystems.filesystemapp.handler.JSONUtils;
 import com.operatingsystems.filesystemapp.model.ActionResult;
+import com.operatingsystems.filesystemapp.model.Directory;
 import com.operatingsystems.filesystemapp.model.PlainTextFile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -35,8 +38,32 @@ public class FileSystemServiceImpl implements FileSystemService {
 
     @Override
     public ActionResult removeFile(final String username, final String fileId) {
+        System.out.println("===============================================================");
         var drive = JSONUtils.getFullDrive(username);
-        System.out.println(drive);
+        System.out.println(getFile(username,"11"));
+        return null;
+    }
+
+    @Override
+    public Object getFile(final String username, final String fileId) {
+        var drive = JSONUtils.getFullDrive(username);
+        Object objectFile = searchFile(drive.getRootDir(), fileId);
+        return objectFile;
+    }
+
+    public Object searchFile(Directory dir, String fileId){
+        System.out.println(dir);
+        if(dir.getId().equals(fileId)){
+            return dir;
+        }
+        for(PlainTextFile file : dir.getFiles()){
+            if(file.getId().equals(fileId)){
+                return file;
+            }
+        }
+        for(Directory childDir : dir.getChildrenDirectories()){
+            return searchFile(childDir, fileId);
+        }
         return null;
     }
 
