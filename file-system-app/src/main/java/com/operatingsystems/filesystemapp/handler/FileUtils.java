@@ -28,12 +28,12 @@ public class FileUtils {
         var file = new File(String.format("%s/%s.%s", location, filename, extension));
 
         try {
-            if (file.createNewFile()) {
+//            if (file.createNewFile()) {
                 var writer = new FileWriter(String.format("%s/%s.%s", location, filename, extension));
                 writer.write(strContent);
                 writer.close();
                 return true;
-            }
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }

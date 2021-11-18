@@ -55,6 +55,7 @@ public class ModelUtils {
         plainTextFile.setExtension((String) mappedObj.get("extension"));
         plainTextFile.setId((String) mappedObj.get("id"));
         plainTextFile.setType((String) mappedObj.get("type"));
+        plainTextFile.setContent((String) mappedObj.get("content"));
 
         return plainTextFile;
     }
@@ -66,6 +67,7 @@ public class ModelUtils {
         System.out.println(mappedObj);
 
         drive.setName((String) mappedObj.get("name"));
+        drive.setPassword((String) mappedObj.get("password"));
         drive.setId((String) mappedObj.get("id"));
         drive.setCurrentDir((String) mappedObj.get("currentDir"));
         drive.setRootDir(  mapToDirectoryObj  ((Map<String,Object>) mappedObj.get("rootDir")));
