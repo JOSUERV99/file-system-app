@@ -135,10 +135,10 @@ public class FileSystemServiceImpl implements FileSystemService {
 
     @Override
     public ActionResult modifyFileContent(final String username, final String fileId, PlainTextFile newFileModified) {
-        Object fileToChange = getFile(username, fileId);
+        var drive = JSONUtils.getFullDrive(username);
+        Object fileToChange = searchFile(drive.getRootDir(), fileId);
         if (fileToChange instanceof PlainTextFile){
             ((PlainTextFile) fileToChange).setContent(newFileModified.getContent());
-            var drive = JSONUtils.getFullDrive(username);
             JSONUtils.saveDriveOrReplace(drive);
             return ActionResult.instance().setSuccess(true).setObject(fileToChange);
         }
