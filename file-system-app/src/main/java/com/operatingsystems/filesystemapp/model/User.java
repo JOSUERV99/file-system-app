@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
-@Data
+/*@Data
 @NoArgsConstructor(staticName = "instance")
 @AllArgsConstructor(staticName = "of")
 @Accessors(chain = true)
@@ -25,4 +25,4 @@ public class User {
     @Builder.Default
     private String createdDate = LocalDateTime.now().toString();
 
-}
+}*/

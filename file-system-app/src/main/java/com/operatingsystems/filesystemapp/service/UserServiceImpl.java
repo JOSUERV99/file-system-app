@@ -14,27 +14,32 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+/*
 @Service
 @Component(value = "userService")
 public class UserServiceImpl implements UserService {
 
-    /**
+    */
+/**
      * Create the user, generate the json file with the credentials of the given user
      * @param username the name of the user, it has to be an unique username
      * @param password the password of the user
      * @return ActionResult, with result of the success of the user creation
-     */
+     *//*
+
     @Override
     public ActionResult createUser(String username, String password) throws JsonProcessingException {
         return null;
     }
 
-    /**
+    */
+/**
      * Get the user log in, generate the json file with the credentials of the given user
      * @param username the name of the user
      * @param password the password of the user
      * @return ActionResult, with result of the success of the log in action
-     */
+     *//*
+
     @Override
     public ActionResult userLogIn(String username, String password) {
 
@@ -42,3 +47,4 @@ public class UserServiceImpl implements UserService {
         return ActionResult.instance().setSuccess(true);
     }
 }
+*/
