@@ -24,11 +24,13 @@ public class DriveController {
     }
 
     @PostMapping(value = "/createDrive/{username}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ActionResult createDrive(@PathVariable String username) {return this.driveService.createDrive(username);}
+    public ActionResult createDrive(@PathVariable String username) {
+        return this.driveService.createDrive(username);
+    }
 
     @GetMapping(value = "/getDrive/{username}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ActionResult getDrive(@PathVariable String username)
     {
-        return this.driveService.createDrive(username);
+        return this.driveService.getDrive(username);
     }
 }

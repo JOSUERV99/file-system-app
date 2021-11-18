@@ -14,8 +14,11 @@ public class ModelUtils {
     {
         var directory = Directory.instance();
 
+        System.out.println(mappedObj);
+
         directory.setName((String) mappedObj.get("name"));
         directory.setType((String) mappedObj.get("type"));
+        directory.setId((String) mappedObj.get("id"));
 
         if (mappedObj.get("childrenDirectories") instanceof List<?>)
             directory.setChildrenDirectories( ((List<?>) mappedObj.get("childrenDirectories")).stream().map(element ->
@@ -23,10 +26,7 @@ public class ModelUtils {
               if (element instanceof Map<?,?>)
               {
                 var mappedElement = (Map<String, Object>) element;
-                var typeValue = (String) mappedElement.get("type");
-
-                if (typeValue.equals("directory"))
-                    return mapToDirectoryObj(mappedElement);
+                return mapToDirectoryObj(mappedElement);
               }
                 return null;
             }).filter(element -> element != null).collect(Collectors.toList()));
@@ -37,10 +37,7 @@ public class ModelUtils {
                 if (element instanceof Map<?,?>)
                 {
                     var mappedElement = (Map<String, Object>) element;
-                    var typeValue = (String) mappedElement.get("type");
-
-                    if (typeValue.equals("directory"))
-                        return mapToPlainTextFileObj(mappedElement);
+                    return mapToPlainTextFileObj(mappedElement);
                 }
                 return null;
             }).filter(element -> element != null).collect(Collectors.toList()));
@@ -56,7 +53,6 @@ public class ModelUtils {
         plainTextFile.setBytesSize((String) mappedObj.get("bytesSize"));
         plainTextFile.setCreatedDate((String) mappedObj.get("createdDate"));
         plainTextFile.setExtension((String) mappedObj.get("extension"));
-        plainTextFile.setModifiedDate((String) mappedObj.get("modifiedDate"));
         plainTextFile.setId((String) mappedObj.get("id"));
         plainTextFile.setType((String) mappedObj.get("type"));
 
@@ -66,6 +62,8 @@ public class ModelUtils {
     public static Drive mapToDrive(Map<String, Object> mappedObj)
     {
         var drive = Drive.instance();
+
+        System.out.println(mappedObj);
 
         drive.setName((String) mappedObj.get("name"));
         drive.setId((String) mappedObj.get("id"));

@@ -6,11 +6,14 @@ import com.operatingsystems.filesystemapp.handler.FileUtils;
 import com.operatingsystems.filesystemapp.handler.JSONUtils;
 import com.operatingsystems.filesystemapp.handler.ModelUtils;
 import com.operatingsystems.filesystemapp.model.ActionResult;
+import com.operatingsystems.filesystemapp.model.Directory;
 import com.operatingsystems.filesystemapp.model.Drive;
+import com.operatingsystems.filesystemapp.model.PlainTextFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -28,28 +31,30 @@ public class DriveServiceImpl implements DriveService {
     /**
      * Create the drive, generate the xml file and instantiate an empty dir for the user
      * @param driveName the name of the drive, where the personal drive will be defined
-     * @return ActionResult, with result of the success of the drive creation
+     * @return ActionResult, with result of the drive creation process
      */
     @Override
     public ActionResult createDrive(final String driveName) {
 
         var dir = directoryService.createDirectory(driveName);
-        var drive = Drive.instance().setRootDir(dir).setName(driveName).setId(UUID.randomUUID().toString()).setOwner(driveName);
+        var drive = Drive.instance().setRootDir(dir).setName(driveName).setId(UUID.randomUUID().toString()).setOwner(driveName).setCurrentDir("/");
 
         String jsonContent = JSONUtils.mapObjectToJsonString(drive);
-        boolean success = FileUtils.createFile(FileSystemConstants.DEFAULT_DRIVES_LOCATION,driveName, FileSystemConstants.DEFAULT_DRIVE_EXTENSION, jsonContent);
 
-        return ActionResult.instance().setSuccess(success).setMetadata(drive.getId()).setObject(drive).setMessage(success ? jsonContent : "There is an error creating the drive");
+        String filename = String.format("%s/%s.%s", FileSystemConstants.DEFAULT_DRIVES_LOCATION,driveName, FileSystemConstants.DEFAULT_DRIVE_EXTENSION);
+
+        if (FileUtils.fileExists(filename))
+            return ActionResult.instance().setSuccess(false).setMessage("There's is an error creating the drive").setMetadata(filename);
+        else {
+            FileUtils.createFile(FileSystemConstants.DEFAULT_DRIVES_LOCATION, driveName, FileSystemConstants.DEFAULT_DRIVE_EXTENSION, jsonContent);
+            return ActionResult.instance().setSuccess(true).setMetadata(drive.getId()).setObject(drive).setMessage(jsonContent);
+        }
     }
 
     @Override
     public ActionResult getDrive(String username) {
-
-        String jsonContent = FileHandler.getContentFromPlainTextFile(String.format("%s/%s.%s", FileSystemConstants.DEFAULT_FILE_SYSTEM_LOCATION, username, FileSystemConstants.DEFAULT_DRIVE_EXTENSION));
-        var mappedDrive = JSONUtils.castJsonStringToHashMap(jsonContent);
-        var drive = ModelUtils.mapToDrive(mappedDrive);
-
-        return ActionResult.instance().setSuccess(true).setObject(drive).setMetadata(jsonContent);
+        var drive = JSONUtils.getFullDrive(username);
+        return ActionResult.instance().setSuccess(true).setObject(drive);
     }
 
     @Override

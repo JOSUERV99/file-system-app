@@ -58,7 +58,6 @@ public class FileUtils {
     }
 
     public static boolean fileExists(String filename) {
-        File file = new File(filename);
-        return file.isFile();
+        return new File(filename).exists();
     }
 }

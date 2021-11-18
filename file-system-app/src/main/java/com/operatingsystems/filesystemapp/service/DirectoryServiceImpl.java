@@ -45,9 +45,6 @@ public class DirectoryServiceImpl implements DirectoryService {
         String filesDir = String.format("%s/%s", FileSystemConstants.DEFAULT_FILE_SYSTEM_LOCATION, username);
         FileUtils.createDir(filesDir);
 
-        String jsonContent = JSONUtils.mapObjectToJsonString(dir);
-        boolean success = FileUtils.createFile(FileSystemConstants.DEFAULT_DRIVES_LOCATION,username, FileSystemConstants.DEFAULT_DRIVE_EXTENSION, jsonContent);
-
         return dir;
     }
 
