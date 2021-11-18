@@ -51,13 +51,10 @@ public class DriveServiceImpl implements DriveService {
     @Override
     public ActionResult getDrive(String username, String password) {
         var drive = JSONUtils.getFullDrive(username);
-        System.out.println(password);
         String validPassword = drive.getPassword();
-        System.out.println(validPassword);
         if (validPassword.equals(password)) {
             return ActionResult.instance().setMessage("Login Successful").setSuccess(true).setObject(drive);
         } else {
-            System.out.println("Mamando");
             return ActionResult.instance().setMessage("The password is not correct").setSuccess(false);
         }
     }
