@@ -25,4 +25,14 @@ public class FileSystemController {
     public ActionResult removeFile(@PathVariable String username, @PathVariable String fileId) {
         return this.fileSystemService.removeFile(username, fileId);
     }
+
+    @DeleteMapping(value = "/shareFile/{buddyUserName}/{ownerUserName}/{fileId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ActionResult shareFile(@PathVariable String buddyUserName,@PathVariable String ownerUserName, @PathVariable String fileId) {
+        return this.fileSystemService.shareFile(fileId, buddyUserName , ownerUserName);
+    }
+
+    @DeleteMapping(value = "/getSharedFiles/{userName}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ActionResult getSharedWithMeFiles(@PathVariable String userName) {
+        return this.fileSystemService.getSharedFiles(userName);
+    }
 }
