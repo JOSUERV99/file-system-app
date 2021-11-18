@@ -43,6 +43,12 @@ public class FileController {
         return this.fileSystemService.moveFile(username,fileId , oldDirId, newDirId);
     }
 
+    @PostMapping("/copyFile/{username}/{fileId}/{newDirId}")
+    //copy vv
+    public ActionResult copyFile(@PathVariable String username,@PathVariable String fileId, @PathVariable String newDirId) {
+        return this.fileSystemService.copyFromVirtualToVirtual(username, fileId,newDirId);
+    }
+
     @PostMapping("/downloadFile/{fileId}")
     //copy vr
     public ActionResult downloadFile(@PathVariable String username, @PathVariable String fileId, @PathVariable String localDir){
