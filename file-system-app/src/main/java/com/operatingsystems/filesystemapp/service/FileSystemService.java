@@ -23,7 +23,7 @@ public interface FileSystemService {
 
     ActionResult copyFromRealToVirtual(final String fileId, final String realDir, final String virtualDir);
 
-    ActionResult copyFromVirtualToVirtual(final String fileId, final String virtualDirOrigin, final String virtualDirDestination);
+    ActionResult copyFromVirtualToVirtual(final String username, final String fileId, final String virtualDirDestination);
 
     ActionResult shareFile(final String fileId, final String buddyUserName, final String ownerUserName);
 

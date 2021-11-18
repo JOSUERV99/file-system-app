@@ -30,4 +30,9 @@ public class FileSystemController {
     public ActionResult shareFile(@PathVariable String buddyUserName,@PathVariable String ownerUserName, @PathVariable String fileId) {
         return this.fileSystemService.shareFile(fileId, buddyUserName , ownerUserName);
     }
+    
+    @PostMapping(value = "/shareFile/{username}/{fileId}/{virtualDirDestination}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ActionResult copyFile(@PathVariable String username,@PathVariable String virtualDirDestination, @PathVariable String fileId) {
+        return this.fileSystemService.copyFromVirtualToVirtual(username, fileId,virtualDirDestination);
+    }
 }
