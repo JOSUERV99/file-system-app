@@ -40,6 +40,10 @@ public class PlainTextFile {
     @Builder.Default
     private String createdDate = LocalDateTime.now().toString();
 
+    @JsonProperty("modifiedDate")
+    @Builder.Default
+    private String modifiedDate = LocalDateTime.now().toString();
+
     @JsonProperty("content")
     @Builder.Default
     private String content = "";
