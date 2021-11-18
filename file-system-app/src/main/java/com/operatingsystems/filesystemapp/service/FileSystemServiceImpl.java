@@ -45,13 +45,19 @@ public class FileSystemServiceImpl implements FileSystemService {
         for(PlainTextFile file : dir.getFiles()){ // Iterates on the files
             if(file.getId().equals(fileId)){ // If this is the one
                 dir.getFiles().remove(file); // Delete it
-                return ActionResult.instance().setSuccess(true).setObject(file); // return success and the file
+                return ActionResult.instance()
+                        .setSuccess(true)
+                        .setObject(file)
+                        .setMetadata(dir); // return success, the file and the parent dir
             }
         }
         for(Directory childDir : dir.getChildrenDirectories()){ // Iterates on the directories
             if(childDir.getId().equals(fileId)){ // If this is the one
                 dir.getChildrenDirectories().remove(childDir); // Delete it
-                return ActionResult.instance().setSuccess(true).setObject(childDir); // return success and the dir
+                return ActionResult.instance()
+                        .setSuccess(true)
+                        .setObject(childDir)
+                        .setMetadata(dir); // return success, the file and the parent dir
             }
             return searchAndRemoveFile(childDir, fileId); // in case is not the one, calls the function with the childDir
         }
