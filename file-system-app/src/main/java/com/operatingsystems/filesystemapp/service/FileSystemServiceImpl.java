@@ -26,7 +26,8 @@ public class FileSystemServiceImpl implements FileSystemService {
 
     @Override
     public ActionResult getFileProperties(String username, String fileId) {
-        Object fileToReturn = getFile(username,fileId);
+        var drive = JSONUtils.getFullDrive(username);
+        Object fileToReturn = searchFile(drive.getRootDir(),fileId);
         if(fileToReturn instanceof PlainTextFile) return ActionResult.instance().setSuccess(true).setObject(fileToReturn);
         return ActionResult.instance().setSuccess(false).setObject(fileToReturn);
     }

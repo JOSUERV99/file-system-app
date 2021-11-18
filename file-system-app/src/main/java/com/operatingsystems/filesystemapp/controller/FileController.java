@@ -23,7 +23,7 @@ public class FileController {
         this.fileSystemService = fileSystemService;
     }
 
-    @GetMapping(value = "/getFile/{username}/{fileId}", produces = {MediaType.APPLICATION_XML_VALUE})
+    @GetMapping(value = "/getFile/{username}/{fileId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ActionResult getFile(@PathVariable String username, @PathVariable String fileId) {
         return this.fileSystemService.getFileProperties(username, fileId);
     }

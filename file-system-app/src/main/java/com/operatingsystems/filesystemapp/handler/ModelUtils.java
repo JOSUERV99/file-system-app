@@ -55,6 +55,7 @@ public class ModelUtils {
         plainTextFile.setExtension((String) mappedObj.get("extension"));
         plainTextFile.setId((String) mappedObj.get("id"));
         plainTextFile.setType((String) mappedObj.get("type"));
+        plainTextFile.setContent((String) mappedObj.get("content"));
 
         return plainTextFile;
     }
