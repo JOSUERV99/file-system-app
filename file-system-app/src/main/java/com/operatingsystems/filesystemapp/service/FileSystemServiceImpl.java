@@ -1,10 +1,7 @@
 package com.operatingsystems.filesystemapp.service;
 
 import com.operatingsystems.filesystemapp.handler.JSONUtils;
-import com.operatingsystems.filesystemapp.model.ActionResult;
-import com.operatingsystems.filesystemapp.model.Directory;
-import com.operatingsystems.filesystemapp.model.FileReference;
-import com.operatingsystems.filesystemapp.model.PlainTextFile;
+import com.operatingsystems.filesystemapp.model.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -12,6 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -90,8 +91,24 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     @Override
-    public ActionResult copyFromVirtualToReal(final String fileId, final String virtualDir, final String realDir) {
-        return null;
+    public ActionResult copyFromVirtualToReal(String username, String fileId, String localPath) {
+        var drive = JSONUtils.getFullDrive(username);
+        Object fileorDirectory = searchFile(drive.getRootDir(), fileId);
+        boolean success;
+        if(fileorDirectory instanceof Directory){
+            Directory dir = ((Directory) fileorDirectory);
+            success = downloadFile(dir, localPath + drive.getName() + "/");
+        }else{
+            PlainTextFile file = ((PlainTextFile) fileorDirectory);
+            try {
+                createRealFile(file, localPath);
+                success = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                success = false;
+            }
+        }
+        return ActionResult.instance().setSuccess(success).setObject(null);
     }
 
     @Override
@@ -161,5 +178,40 @@ public class FileSystemServiceImpl implements FileSystemService {
             return ActionResult.instance().setSuccess(true).setObject(newDir);
         }
         return ActionResult.instance().setSuccess(false).setObject(null);
+    }
+
+    @Override
+    public boolean downloadFile(Directory dir, String path){
+        for(PlainTextFile file : dir.getFiles()){
+            //para todos los archivos dentro del directorio, creelos y guardelos
+            try {
+                createRealFile(file, path);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        for(Directory childDir : dir.getChildrenDirectories()){
+            //para todos los directorios creelos y revise recursivamente dentro de ellos
+            try {
+                String childPath = path + "\\\\" +childDir.getName();
+                createRealDirectory(childPath);
+                downloadFile(childDir, childPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void createRealFile(PlainTextFile file, String path) throws IOException{
+        FileWriter myWriter = new FileWriter(path+"\\\\"+file.getName()+file.getExtension());
+        myWriter.write(file.getContent());
+        myWriter.close();
+    }
+    public void createRealDirectory(String path) throws IOException{
+        Files.createDirectories(Paths.get(path));
+
     }
 }
