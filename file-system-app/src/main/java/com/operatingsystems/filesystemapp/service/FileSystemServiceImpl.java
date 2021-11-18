@@ -1,5 +1,6 @@
 package com.operatingsystems.filesystemapp.service;
 
+import com.operatingsystems.filesystemapp.handler.JSONUtils;
 import com.operatingsystems.filesystemapp.model.ActionResult;
 import com.operatingsystems.filesystemapp.model.PlainTextFile;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,8 @@ public class FileSystemServiceImpl implements FileSystemService {
 
     @Override
     public ActionResult removeFile(final String username, final String fileId) {
+        var drive = JSONUtils.getFullDrive(username);
+        System.out.println(drive);
         return null;
     }
 
