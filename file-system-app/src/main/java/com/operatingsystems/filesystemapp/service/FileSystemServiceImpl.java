@@ -49,6 +49,7 @@ public class FileSystemServiceImpl implements FileSystemService {
                         .setMetadata(dir); // return success, the file and the parent dir
             }
         }
+        Object auxObject = null;
         for(Directory childDir : dir.getChildrenDirectories()){ // Iterates on the directories
             if(childDir.getId().equals(fileId)){ // If this is the one
                 dir.getChildrenDirectories().remove(childDir); // Delete it
@@ -57,9 +58,9 @@ public class FileSystemServiceImpl implements FileSystemService {
                         .setObject(childDir)
                         .setMetadata(dir); // return success, the file and the parent dir
             }
-            return searchAndRemoveFile(childDir, fileId); // in case is not the one, calls the function with the childDir
+            auxObject =  searchAndRemoveFile(childDir, fileId); // in case is not the one, calls the function with the childDir
         }
-        return ActionResult.instance().setSuccess(false).setObject(null); //If never found, return not success and null
+        return ActionResult.instance().setSuccess(false).setObject(auxObject); //If never found, return not success and null
     }
 
     @Override
@@ -78,10 +79,14 @@ public class FileSystemServiceImpl implements FileSystemService {
                 return file;
             }
         }
+        Object auxObject = null;
         for(Directory childDir : dir.getChildrenDirectories()){
-            return searchFile(childDir, fileId);
+            auxObject = searchFile(childDir, fileId);
+            if(auxObject != null){
+                return auxObject;
+            }
         }
-        return null;
+        return auxObject;
     }
 
     @Override
@@ -143,5 +148,29 @@ public class FileSystemServiceImpl implements FileSystemService {
             return ActionResult.instance().setSuccess(true).setObject(fileToChange);
         }
         return ActionResult.instance().setSuccess(false).setObject(fileToChange);
+    }
+
+    @Override
+    public ActionResult moveFile(final String username, final String fileId, final String oldDirId, final String newDirId){
+        var drive = JSONUtils.getFullDrive(username);
+        Directory oldDir = ((Directory)searchFile(drive.getRootDir(), oldDirId));
+        Directory newDir = ((Directory)searchFile(drive.getRootDir(), newDirId));
+        Object fileToMove = searchFile(drive.getRootDir(), fileId);
+        System.out.println("============");
+        System.out.println(fileToMove);
+        System.out.println(oldDir);
+        System.out.println(newDir);
+        if(oldDir != null && newDir != null && fileToMove != null){
+            if(fileToMove instanceof Directory){
+                newDir.getChildrenDirectories().add((Directory)fileToMove);
+                oldDir.getChildrenDirectories().remove((Directory)fileToMove);
+            }else if(fileToMove instanceof PlainTextFile){
+                newDir.getFiles().add((PlainTextFile)fileToMove);
+                oldDir.getFiles().remove((PlainTextFile)fileToMove);
+            }
+            JSONUtils.saveDriveOrReplace(drive);
+            return ActionResult.instance().setSuccess(true).setObject(newDir);
+        }
+        return ActionResult.instance().setSuccess(false).setObject(null);
     }
 }

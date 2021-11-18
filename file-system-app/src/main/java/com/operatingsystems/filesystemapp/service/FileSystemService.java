@@ -4,6 +4,7 @@ import com.operatingsystems.filesystemapp.model.ActionResult;
 import com.operatingsystems.filesystemapp.model.Directory;
 import com.operatingsystems.filesystemapp.model.PlainTextFile;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public interface FileSystemService {
@@ -31,6 +32,8 @@ public interface FileSystemService {
     ActionResult createFile(final String username, final String dirId, final PlainTextFile newFile);
 
     ActionResult modifyFileContent(final String username, final String fileId, PlainTextFile newFileModified);
+
+    ActionResult moveFile(final String username, final String fileId, final String oldDirId, final String newDirId);
 
 
 }
