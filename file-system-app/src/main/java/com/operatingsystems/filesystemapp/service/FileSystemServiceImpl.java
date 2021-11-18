@@ -3,6 +3,7 @@ package com.operatingsystems.filesystemapp.service;
 import com.operatingsystems.filesystemapp.handler.JSONUtils;
 import com.operatingsystems.filesystemapp.model.ActionResult;
 import com.operatingsystems.filesystemapp.model.Directory;
+import com.operatingsystems.filesystemapp.model.FileReference;
 import com.operatingsystems.filesystemapp.model.PlainTextFile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -102,8 +103,22 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     @Override
-    public ActionResult shareFile(final String fileId, final String buddyUserName) {
-        return null;
+    public ActionResult shareFile(final String fileId, final String buddyUserName, final String ownerUserName) {
+        var drive = JSONUtils.getFullDrive(buddyUserName);
+        FileReference newFileReference = FileReference.instance().setFileId(fileId).setOwnerId(ownerUserName);
+        drive.getSharedWithMeFiles().add(newFileReference);
+        return ActionResult.instance().setSuccess(true).setObject(newFileReference);
+    }
+
+    @Override
+    public ActionResult getSharedFiles(final String username) {
+        var drive = JSONUtils.getFullDrive(username);
+        List<Object> sharedFiles = List.of();
+        for(FileReference fileReference : drive.getSharedWithMeFiles()){
+            var ownerDrive = JSONUtils.getFullDrive(fileReference.getOwnerId());
+            sharedFiles.add(searchFile(ownerDrive.getRootDir(), fileReference.getFileId()));
+        }
+        return ActionResult.instance().setSuccess(true).setObject(sharedFiles);
     }
 
     @Override

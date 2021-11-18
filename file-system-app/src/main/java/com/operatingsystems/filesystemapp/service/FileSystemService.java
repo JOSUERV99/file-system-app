@@ -21,7 +21,9 @@ public interface FileSystemService {
 
     ActionResult copyFromVirtualToVirtual(final String fileId, final String virtualDirOrigin, final String virtualDirDestination);
 
-    ActionResult shareFile(final String fileId, final String buddyUserName);
+    ActionResult shareFile(final String fileId, final String buddyUserName, final String ownerUserName);
+
+    ActionResult getSharedFiles(final String username);
 
     ActionResult createFile(@RequestBody PlainTextFile newFile);
 
