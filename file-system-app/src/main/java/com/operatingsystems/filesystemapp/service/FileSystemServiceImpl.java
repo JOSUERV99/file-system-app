@@ -40,7 +40,9 @@ public class FileSystemServiceImpl implements FileSystemService {
     @Override
     public ActionResult removeFile(final String username, final String fileId) {
         var drive = JSONUtils.getFullDrive(username);
-        return searchAndRemoveFile(drive.getRootDir(), fileId);
+        ActionResult result = searchAndRemoveFile(drive.getRootDir(), fileId);
+        JSONUtils.saveDriveOrReplace(drive);
+        return result;
     }
     public ActionResult searchAndRemoveFile(Directory dir, String fileId){
         for(PlainTextFile file : dir.getFiles()){ // Iterates on the files
@@ -107,6 +109,7 @@ public class FileSystemServiceImpl implements FileSystemService {
         var drive = JSONUtils.getFullDrive(buddyUserName);
         FileReference newFileReference = FileReference.instance().setFileId(fileId).setOwnerId(ownerUserName);
         drive.getSharedWithMeFiles().add(newFileReference);
+        JSONUtils.saveDriveOrReplace(drive);
         return ActionResult.instance().setSuccess(true).setObject(newFileReference);
     }
 
@@ -124,9 +127,12 @@ public class FileSystemServiceImpl implements FileSystemService {
     @Override
     public ActionResult createFile(final String username, final String dirId, final PlainTextFile newFile) {
         newFile.setId(UUID.randomUUID().toString());
-        Object dirToInsert = getFile(username, dirId);
+        var drive = JSONUtils.getFullDrive(username);
+        Object dirToInsert = searchFile(drive.getRootDir(), dirId);
         if (dirToInsert instanceof Directory){
-            ((Directory) dirToInsert).getFiles().add(newFile);
+            Directory directory = ((Directory) dirToInsert);
+            directory.getFiles().add(newFile);
+            JSONUtils.saveDriveOrReplace(drive);
             return ActionResult.instance().setSuccess(true).setObject(newFile);
         }
         return ActionResult.instance().setSuccess(false).setObject(dirToInsert);
@@ -137,6 +143,8 @@ public class FileSystemServiceImpl implements FileSystemService {
         Object fileToChange = getFile(username, fileId);
         if (fileToChange instanceof PlainTextFile){
             ((PlainTextFile) fileToChange).setContent(newFileModified.getContent());
+            var drive = JSONUtils.getFullDrive(username);
+            JSONUtils.saveDriveOrReplace(drive);
             return ActionResult.instance().setSuccess(true).setObject(fileToChange);
         }
         return ActionResult.instance().setSuccess(false).setObject(fileToChange);
