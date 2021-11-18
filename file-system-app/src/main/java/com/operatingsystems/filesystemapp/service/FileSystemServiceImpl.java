@@ -3,8 +3,12 @@ package com.operatingsystems.filesystemapp.service;
 import com.operatingsystems.filesystemapp.handler.JSONUtils;
 import com.operatingsystems.filesystemapp.model.ActionResult;
 import com.operatingsystems.filesystemapp.model.PlainTextFile;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.UUID;
 
@@ -57,8 +61,9 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     @Override
-    public ActionResult createFile(final String fileId, final String extension, final String content) {
-        return null;
+    public ActionResult createFile(final PlainTextFile newFile) {
+        newFile.setId(UUID.randomUUID().toString());
+        return ActionResult.instance().setSuccess(true).setObject(newFile);
     }
 
     @Override

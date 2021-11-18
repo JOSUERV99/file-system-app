@@ -1,13 +1,11 @@
 package com.operatingsystems.filesystemapp.controller;
 
+import com.operatingsystems.filesystemapp.model.ActionResult;
 import com.operatingsystems.filesystemapp.model.PlainTextFile;
 import com.operatingsystems.filesystemapp.service.FileSystemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * FileController
@@ -28,6 +26,12 @@ public class FileController {
     @GetMapping(value = "/getFile/{username}/{fileId}", produces = {MediaType.APPLICATION_XML_VALUE})
     public PlainTextFile getFile(@PathVariable String username, @PathVariable String fileId) {
         return this.fileSystemService.getFileProperties(username, fileId);
+    }
+
+    @PostMapping("/createFile")
+    public ActionResult createFile(@RequestBody PlainTextFile newFile) {
+
+        return this.fileSystemService.createFile(newFile);
     }
 
 }

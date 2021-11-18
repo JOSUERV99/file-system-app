@@ -2,6 +2,8 @@ package com.operatingsystems.filesystemapp.service;
 
 import com.operatingsystems.filesystemapp.model.ActionResult;
 import com.operatingsystems.filesystemapp.model.PlainTextFile;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 
 public interface FileSystemService {
 
@@ -19,8 +21,9 @@ public interface FileSystemService {
 
     ActionResult shareFile(final String fileId, final String buddyUserName);
 
-    ActionResult createFile(final String fileId, final String extension, final String content);
+    ActionResult createFile(@RequestBody PlainTextFile newFile);
 
     ActionResult modifyFileContent(final String fileId, final String newContent);
+
 
 }
