@@ -2,13 +2,11 @@ package com.operatingsystems.filesystemapp.controller;
 
 import com.operatingsystems.filesystemapp.model.ActionResult;
 import com.operatingsystems.filesystemapp.model.Directory;
+import com.operatingsystems.filesystemapp.model.PlainTextFile;
 import com.operatingsystems.filesystemapp.service.DirectoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * DirectoryController
@@ -29,6 +27,11 @@ public class DirectoryController {
     public Directory getDirectory(@PathVariable String username)
     {
         return this.directoryService.getDirectory(username);
+    }
+
+    @PostMapping("/createDirectory/{username}/{DirId}")
+    public ActionResult createDir(@PathVariable String username, @PathVariable String DirId, @RequestBody Directory newDir) {
+        return this.directoryService.createVirtualDirectory(username, DirId, newDir);
     }
 
 }
