@@ -1,4 +1,4 @@
-spackage com.operatingsystems.filesystemapp.service;
+package com.operatingsystems.filesystemapp.service;
 
 import com.operatingsystems.filesystemapp.handler.JSONUtils;
 import com.operatingsystems.filesystemapp.model.ActionResult;
