@@ -38,10 +38,24 @@ public class FileSystemServiceImpl implements FileSystemService {
 
     @Override
     public ActionResult removeFile(final String username, final String fileId) {
-        System.out.println("===============================================================");
         var drive = JSONUtils.getFullDrive(username);
-        System.out.println(getFile(username,"11"));
-        return null;
+        return searchAndRemoveFile(drive.getRootDir(), fileId);
+    }
+    public ActionResult searchAndRemoveFile(Directory dir, String fileId){
+        for(PlainTextFile file : dir.getFiles()){ // Iterates on the files
+            if(file.getId().equals(fileId)){ // If this is the one
+                dir.getFiles().remove(file); // Delete it
+                return ActionResult.instance().setSuccess(true).setObject(file); // return success and the file
+            }
+        }
+        for(Directory childDir : dir.getChildrenDirectories()){ // Iterates on the directories
+            if(childDir.getId().equals(fileId)){ // If this is the one
+                dir.getChildrenDirectories().remove(childDir); // Delete it
+                return ActionResult.instance().setSuccess(true).setObject(childDir); // return success and the dir
+            }
+            return searchAndRemoveFile(childDir, fileId); // in case is not the one, calls the function with the childDir
+        }
+        return ActionResult.instance().setSuccess(false).setObject(null); //If never found, return not success and null
     }
 
     @Override
@@ -52,7 +66,6 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     public Object searchFile(Directory dir, String fileId){
-        System.out.println(dir);
         if(dir.getId().equals(fileId)){
             return dir;
         }
