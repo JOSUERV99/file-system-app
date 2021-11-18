@@ -23,14 +23,14 @@ public class DirectoryServiceImpl implements DirectoryService {
 
         String fileName = String.format("%s/%s.%s", FileSystemConstants.DEFAULT_DRIVES_LOCATION, username, FileSystemConstants.DEFAULT_DRIVE_EXTENSION);
 
-        System.out.println(fileName);
+//        System.out.println(fileName);
         if (!FileUtils.fileExists(fileName)) return null;
 
         String jsonContent = FileHandler.getContentFromPlainTextFile(fileName);
         var mappedDir = JSONUtils.castJsonStringToHashMap(jsonContent);
         var dir = ModelUtils.mapToDirectoryObj(mappedDir);
 
-        System.out.println(dir);
+//        System.out.println(dir);
 
         return dir;
     }
