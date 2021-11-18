@@ -108,20 +108,28 @@ public class FileSystemServiceImpl implements FileSystemService {
     public ActionResult shareFile(final String fileId, final String buddyUserName, final String ownerUserName) {
         var drive = JSONUtils.getFullDrive(buddyUserName);
         FileReference newFileReference = FileReference.instance().setFileId(fileId).setOwnerId(ownerUserName);
-        drive.getSharedWithMeFiles().add(newFileReference);
-        JSONUtils.saveDriveOrReplace(drive);
-        return ActionResult.instance().setSuccess(true).setObject(newFileReference);
+        drive.getSharedReferences().add(newFileReference);
+        return ActionResult.instance().setSuccess(false).setObject(null);
     }
 
     @Override
     public ActionResult getSharedFiles(final String username) {
         var drive = JSONUtils.getFullDrive(username);
-        List<Object> sharedFiles = List.of();
-        for(FileReference fileReference : drive.getSharedWithMeFiles()){
+        Directory newsharedWithMeRoot = Directory.instance().setId(UUID.randomUUID().toString()).setName("sharedWithMeRoot");
+        for(FileReference fileReference : drive.getSharedReferences()){
             var ownerDrive = JSONUtils.getFullDrive(fileReference.getOwnerId());
-            sharedFiles.add(searchFile(ownerDrive.getRootDir(), fileReference.getFileId()));
+            Object fileToShared = searchFile(ownerDrive.getRootDir(), fileReference.getFileId());
+            if(fileToShared != null) {
+                if (fileToShared instanceof Directory) {
+                    newsharedWithMeRoot.getChildrenDirectories().add((Directory) fileToShared);
+                } else if (fileToShared instanceof PlainTextFile) {
+                    newsharedWithMeRoot.getFiles().add((PlainTextFile) fileToShared);
+                }
+                drive.setSharedWithMeRoot(newsharedWithMeRoot);
+                JSONUtils.saveDriveOrReplace(drive);
+            }
         }
-        return ActionResult.instance().setSuccess(true).setObject(sharedFiles);
+        return ActionResult.instance().setSuccess(true).setObject(drive.getSharedWithMeRoot());
     }
 
     @Override
