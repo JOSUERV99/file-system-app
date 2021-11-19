@@ -41,7 +41,7 @@ public class FileSystemServiceImpl implements FileSystemService {
             return ActionResult.instance().setSuccess(false);
         }
         JSONUtils.saveDriveOrReplace(drive);
-        return ActionResult.instance().setSuccess(true).setMetadata(result);
+        return ActionResult.instance().setSuccess(true).setObject(result);
     }
     public Object searchAndRemoveFile(Directory dir, String fileId, Directory parentDir){
         if(dir.getId().equals(fileId)){
@@ -62,32 +62,6 @@ public class FileSystemServiceImpl implements FileSystemService {
             }
         }
         return auxObject;
-
-//        ActionResult auxObject = null;
-//        for(PlainTextFile file : dir.getFiles()){ // Iterates on the files
-//            if(file.getId().equals(fileId)){ // If this is the one
-//                dir.getFiles().remove(file); // Delete it
-//                auxObject = ActionResult.instance()
-//                            .setSuccess(true)
-//                            .setObject(file)
-//                            .setMetadata(dir); // return success, the file and the parent dir
-//            }
-//        }
-//        if(auxObject == null){
-//            for(Directory childDir : dir.getChildrenDirectories()){ // Iterates on the directories
-//                if(childDir.getId().equals(fileId)){ // If this is the one
-//                    dir.getChildrenDirectories().remove(childDir); // Delete it
-//                    auxObject =  ActionResult.instance()
-//                            .setSuccess(true)
-//                            .setObject(childDir)
-//                            .setMetadata(dir); // return success, the file and the parent dir
-//                    break;
-//                }else {
-//                    auxObject = searchAndRemoveFile(childDir, fileId); // in case is not the one, calls the function with the childDir
-//                }
-//            }
-//        }
-//        return auxObject;
     }
 
     @Override
