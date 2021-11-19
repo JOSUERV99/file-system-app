@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * Where all the stuff relating to plain text files manipulation requests comes
  */
 @RestController()
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/file")
 public class FileController {
 

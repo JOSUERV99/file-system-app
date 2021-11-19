@@ -14,5 +14,5 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class PasswordWrapper {
     @JsonProperty("password")
-    String password;
+    public String password;
 }

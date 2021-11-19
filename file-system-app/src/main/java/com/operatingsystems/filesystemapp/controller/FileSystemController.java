@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/fileSystem")
+@CrossOrigin(origins = "http://localhost:3000")
 public class FileSystemController {
 
     private final FileSystemServiceImpl fileSystemService;

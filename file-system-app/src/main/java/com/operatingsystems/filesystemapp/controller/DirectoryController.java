@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * Where all the stuff relating to directory manipulation request comes
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/dir")
 public class DirectoryController {
 

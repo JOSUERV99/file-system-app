@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/drive")
+@CrossOrigin(origins = "http://localhost:3000")
 public class DriveController {
 
     private final DriveServiceImpl driveService;
@@ -26,13 +27,14 @@ public class DriveController {
     }
 
     @PostMapping(value = "/createDrive/{username}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ActionResult createDrive(@PathVariable String username, @RequestBody PasswordWrapper passwordWrapper) {
+    public ActionResult createDrive(@PathVariable String username, @RequestBody  PasswordWrapper passwordWrapper) {
         return this.driveService.createDrive(username, passwordWrapper.getPassword());
     }
 
-    @GetMapping(value = "/getDrive/{username}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/getDrive/{username}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ActionResult getDrive(@PathVariable String username, @RequestBody PasswordWrapper passwordWrapper)
     {
+        System.out.println(passwordWrapper.getPassword());
         return this.driveService.getDrive(username, passwordWrapper.getPassword());
     }
 
