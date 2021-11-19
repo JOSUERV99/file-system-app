@@ -8,29 +8,33 @@ const AppLayout = (props) => {
 
     return (
 
-        <Stack direction="horizontal" gap={1}>
-            <div className="bg-light border"><AppBar /></div>
-            <div className="bg-light border p-auto my-5"><FileSystemViewer /></div>
-            <div className="bg-light border"></div>
-        </Stack>
+        // <Stack direction="horizontal" gap={1}>
+        //     <div className="bg-light border"><AppBar /></div>
+        //     <div className="bg-light border p-auto my-5"><FileSystemViewer /></div>
+        //     <div className="bg-light border"></div>
+        // </Stack>
 
 
 
-    //     <Container>
-    //         <Row lg={10} md={10}>
-    //             <Col lg={10} md={10} style={{background: "red", width: "100%"}} >
-                  
-    //             </Col>
-    //         </Row>
-    //         <Row>
-    //             <Col lg={5} md={5} >
-    //                 <FileContentViewer/>
-    //             </Col>
-    //             <Col lg={5} md={5}>
-    //                 <FileSystemViewer />
-    //             </Col>
-    //         </Row>
-    //   </Container>
+        <Container >
+            <Row lg={3} md={3}>
+                <Col />
+                <Col  style={{background: "green", width:"50%", padding: 5}} >
+                    Un tipo de buscador<Col />
+                </Col>
+
+            </Row>
+            <Row lg={3} md={3}>
+                <Col> 
+                    <FileSystemViewer />
+                    
+                </Col>
+                <Col >
+                    <FileContentViewer/>
+                </Col>
+            </Row>
+      </Container>
+
         );
 };
 

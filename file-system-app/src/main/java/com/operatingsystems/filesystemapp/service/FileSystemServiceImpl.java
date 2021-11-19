@@ -206,7 +206,7 @@ public class FileSystemServiceImpl implements FileSystemService {
         for(Directory childDir : dir.getChildrenDirectories()){
             //para todos los directorios creelos y revise recursivamente dentro de ellos
             try {
-                String childPath = path + "\\\\" +childDir.getName();
+                String childPath = path + "/" +childDir.getName();
                 createRealDirectory(childPath);
                 downloadFile(childDir, childPath);
             } catch (IOException e) {
@@ -218,7 +218,7 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     public void createRealFile(PlainTextFile file, String path) throws IOException{
-        FileWriter myWriter = new FileWriter(path+"\\\\"+file.getName()+file.getExtension());
+        FileWriter myWriter = new FileWriter(path+"/"+file.getName()+file.getExtension());
         myWriter.write(file.getContent());
         myWriter.close();
     }
