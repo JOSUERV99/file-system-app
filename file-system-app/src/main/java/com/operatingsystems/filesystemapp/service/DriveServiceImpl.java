@@ -1,10 +1,8 @@
 package com.operatingsystems.filesystemapp.service;
 
 import com.operatingsystems.filesystemapp.constants.FileSystemConstants;
-import com.operatingsystems.filesystemapp.handler.FileHandler;
 import com.operatingsystems.filesystemapp.handler.FileUtils;
 import com.operatingsystems.filesystemapp.handler.JSONUtils;
-import com.operatingsystems.filesystemapp.handler.ModelUtils;
 import com.operatingsystems.filesystemapp.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

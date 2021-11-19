@@ -7,14 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 @Builder
 @Data
 @NoArgsConstructor(staticName = "instance")
 @AllArgsConstructor(staticName = "of")
 @Accessors(chain = true)
 public class FileReference {
+
     @JsonProperty("fileId")
     private String fileId;
 

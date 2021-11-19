@@ -1,19 +1,15 @@
 package com.operatingsystems.filesystemapp.service;
 
 import com.operatingsystems.filesystemapp.constants.FileSystemConstants;
-import com.operatingsystems.filesystemapp.handler.FileHandler;
 import com.operatingsystems.filesystemapp.handler.FileUtils;
 import com.operatingsystems.filesystemapp.handler.JSONUtils;
 import com.operatingsystems.filesystemapp.handler.ModelUtils;
 import com.operatingsystems.filesystemapp.model.ActionResult;
 import com.operatingsystems.filesystemapp.model.Directory;
-import com.operatingsystems.filesystemapp.service.FileSystemServiceImpl;
-import com.operatingsystems.filesystemapp.model.PlainTextFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,19 +23,17 @@ public class DirectoryServiceImpl implements DirectoryService {
     public DirectoryServiceImpl(FileSystemServiceImpl fileSystemServiceImpl){
         this.fileSystemServiceImpl = fileSystemServiceImpl;
     }
+
     @Override
     public Directory getDirectory(String username) {
 
         String fileName = String.format("%s/%s.%s", FileSystemConstants.DEFAULT_DRIVES_LOCATION, username, FileSystemConstants.DEFAULT_DRIVE_EXTENSION);
 
-//        System.out.println(fileName);
         if (!FileUtils.fileExists(fileName)) return null;
 
-        String jsonContent = FileHandler.getContentFromPlainTextFile(fileName);
+        String jsonContent = FileUtils.getContentFromPlainTextFile(fileName);
         var mappedDir = JSONUtils.castJsonStringToHashMap(jsonContent);
         var dir = ModelUtils.mapToDirectoryObj(mappedDir);
-
-//        System.out.println(dir);
 
         return dir;
     }
@@ -57,16 +51,19 @@ public class DirectoryServiceImpl implements DirectoryService {
         return dir;
     }
     @Override
-    public ActionResult createVirtualDirectory(final String username, final String dirId, final Directory newDir){
+    public ActionResult createVirtualDirectory(final String username, final String dirId, final Directory newDir) {
+
         newDir.setId(UUID.randomUUID().toString());
         var drive = JSONUtils.getFullDrive(username);
         Object dirToInsert = fileSystemServiceImpl.searchFile(drive.getRootDir(), dirId);
+
         if (dirToInsert instanceof Directory){
             Directory directory = ((Directory) dirToInsert);
             directory.getChildrenDirectories().add(newDir);
             JSONUtils.saveDriveOrReplace(drive);
             return ActionResult.instance().setSuccess(true).setObject(newDir);
         }
+
         return ActionResult.instance().setSuccess(false).setObject(dirToInsert);
     };
 

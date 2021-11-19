@@ -3,6 +3,8 @@ package com.operatingsystems.filesystemapp.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -24,9 +26,9 @@ public class Directory  {
 
     @JsonProperty("files")
     @Builder.Default
-    private List<PlainTextFile> files = List.of();
+    private List<PlainTextFile> files = new ArrayList<>();
 
     @JsonProperty("childrenDirectories")
     @Builder.Default
-    private List<Directory> childrenDirectories = List.of();
+    private List<Directory> childrenDirectories = new ArrayList<>();
 }

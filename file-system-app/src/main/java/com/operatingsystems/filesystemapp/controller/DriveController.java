@@ -14,15 +14,14 @@ import org.springframework.web.bind.annotation.*;
  * Where all the stuff relating to drive manipulation request comes
  */
 @RestController
-@RequestMapping("/api/drive")
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api/drive")
 public class DriveController {
 
     private final DriveServiceImpl driveService;
 
     @Autowired
-    public DriveController(DriveServiceImpl driveService)
-    {
+    public DriveController(DriveServiceImpl driveService) {
         this.driveService = driveService;
     }
 
@@ -32,9 +31,7 @@ public class DriveController {
     }
 
     @PostMapping(value = "/getDrive/{username}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ActionResult getDrive(@PathVariable String username, @RequestBody PasswordWrapper passwordWrapper)
-    {
-        System.out.println(passwordWrapper.getPassword());
+    public ActionResult getDrive(@PathVariable String username, @RequestBody PasswordWrapper passwordWrapper) {
         return this.driveService.getDrive(username, passwordWrapper.getPassword());
     }
 

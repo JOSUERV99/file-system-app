@@ -1,16 +1,16 @@
 package com.operatingsystems.filesystemapp.handler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.operatingsystems.filesystemapp.constants.FileSystemConstants;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FileUtils {
 
@@ -25,15 +25,11 @@ public class FileUtils {
 
     public static boolean createFile(String location, String filename, String extension, String strContent) {
 
-        var file = new File(String.format("%s/%s.%s", location, filename, extension));
-
         try {
-//            if (file.createNewFile()) {
-                var writer = new FileWriter(String.format("%s/%s.%s", location, filename, extension));
-                writer.write(strContent);
-                writer.close();
-                return true;
-//            }
+            var writer = new FileWriter(String.format("%s/%s.%s", location, filename, extension));
+            writer.write(strContent);
+            writer.close();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,23 +37,21 @@ public class FileUtils {
         return false;
     }
 
+    public static boolean fileExists(String filename) {
+        return new File(filename).exists();
+    }
 
-    public static String mapObjectToXMLString(Object input) {
-        JacksonXmlModule xmlModule = new JacksonXmlModule();
-        xmlModule.setDefaultUseWrapper(false);
-        ObjectMapper objectMapper = new XmlMapper(xmlModule);
+    public static String getContentFromPlainTextFile(String fileName) {
 
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        List<String> lines = Collections.emptyList();
+
         try {
-            return objectMapper.writeValueAsString(input);
-        } catch (JsonProcessingException e) {
+            lines =
+                    Files.readAllLines(Paths.get(fileName), StandardCharsets.UTF_8);
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return null;
-    }
-
-    public static boolean fileExists(String filename) {
-        return new File(filename).exists();
+        return lines.stream().collect(Collectors.joining("\n", "", "\n"));
     }
 }
