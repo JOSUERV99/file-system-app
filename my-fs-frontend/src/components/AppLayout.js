@@ -2,39 +2,46 @@ import React from "react";
 import AppBar from "./AppBar";
 import FileContentViewer from "./FileContentViewer";
 import FileSystemViewer from "./FileSystemViewer";
-import { Container, Row, Col, Stack } from 'react-bootstrap';
+import { Container, Row, Col,Modal } from 'react-bootstrap';
+import { useState, useEffect } from "react";
+import { Login } from "./Login";
 
-const AppLayout = (props) => {
+import { FS_MODE, SIGNIN_MODE, SIGNUP_MODE } from "../App";
+
+const AppLayout = ({global}) => {
+
+    const [glob, setGlobal]  = global;
 
     return (
+        <div id="container">
+            {
+                glob.driveMode==FS_MODE ?
+                <Container style={{background : "red", width: "100%", display: "contents"}}>
+                    <Row lg={2} md={2} className="m-4">
+                        <Col>
+                            <AppBar global={[glob, setGlobal]}/>
+                        </Col>
+                    </Row>
+                    <Row lg={3} md={3} className="m-4">
+                        <Col> 
+                            <FileSystemViewer global={[glob, setGlobal]}/>
+                        </Col>
+                        <Col>
+                            <FileContentViewer global={[glob, setGlobal]}/>
+                        </Col>
+                    </Row>
+                </Container>
 
-        // <Stack direction="horizontal" gap={1}>
-        //     <div className="bg-light border"><AppBar /></div>
-        //     <div className="bg-light border p-auto my-5"><FileSystemViewer /></div>
-        //     <div className="bg-light border"></div>
-        // </Stack>
+                : glob.driveMode==SIGNIN_MODE ?
 
+                <Login global={[glob, setGlobal]}/>
 
-
-        <Container >
-            <Row lg={3} md={3}>
-                <Col />
-                <Col  style={{background: "green", width:"50%", padding: 5}} >
-                    Un tipo de buscador<Col />
-                </Col>
-
-            </Row>
-            <Row lg={3} md={3}>
-                <Col> 
-                    <FileSystemViewer />
-                    
-                </Col>
-                <Col >
-                    <FileContentViewer/>
-                </Col>
-            </Row>
-      </Container>
-
+                : glob.driveMode==SIGNUP_MODE ?
+                <h1>SIGNUP</h1>
+                :
+                <></>
+            }
+        </div>
         );
 };
 

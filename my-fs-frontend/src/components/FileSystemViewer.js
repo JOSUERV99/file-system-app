@@ -4,26 +4,42 @@ import { Alert } from "react-bootstrap";
 
 import dummyDrive from './dummyDrive.json';
 
-const FileSystemViewer = (props) => {
-    const [selectedFSItemId, setSelectedFSItemId] = useState('');
-    const [selectedItem, setSelectedItem] = useState({});
-    const [drive, setDrive] = useState(dummyDrive.object);
+const color = {
+    background: "#3d747e",
+}
 
-    const setFSItem = (item) => { setSelectedFSItemId(item.id); setSelectedItem(item);}
+const FileSystemViewer = ({global}) => {
 
-    const mapFile = (file) => <Tree.File id={file.id} name={file.name} extra={file.bytesSize} onClick={() => setFSItem(file)}></Tree.File>;
+    const [glob, setGlobal] = global;
+    const [path, setPath] = useState(glob.name);
+
+    const setFSItem = (item) => { 
+        setGlobal({...glob, selectedItem : item }); 
+    }
+
+    const handlePath = (p) => {
+        alert('asdasd')
+        setPath(p);
+    }
+
+    const mapFile = (file) => <Tree.File id={file.id} name={file.name || '(No name specified)'} extra={file.bytesSize} onClick={() => setFSItem(file)}></Tree.File>;
     const mapDir = (dir) => (
-        <Tree.Folder id={dir.id} name={dir.name} onClick={() => setFSItem(dir)}>
+        <Tree.Folder id={dir.id} name={dir.name } onClick={() => setFSItem(dir)}>
             {dir.childrenDirectories.map(d => mapDir(d))}
             {dir.files.map(f => mapFile(f))}
         </Tree.Folder>
     )
 
-    return (<>
-        <Tree initialExpand={true}>{mapDir(drive.rootDir)}</Tree>
-        
-        <Alert variant='primary'>{selectedItem && `${selectedItem.name} ${selectedItem.id}`}</Alert>
-        </>
+    return (
+        <div style={{position: "fixed", x:0, y:0, height: "100%"}} className="mt-4" >
+            {
+                glob.selectedItem &&
+                <Alert variant='info'>{glob.selectedItem.name  || '(No name specified)'}</Alert>
+            }
+            
+            <Tree initialExpand={true} onClick={handlePath}>{mapDir(glob.drive.rootDir)} </Tree>
+            
+        </div>
     );
 };
 
