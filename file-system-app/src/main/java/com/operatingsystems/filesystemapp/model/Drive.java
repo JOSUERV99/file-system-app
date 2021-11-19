@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -33,7 +34,7 @@ public class Drive {
 
     @JsonProperty("sharedReferences")
     @Builder.Default
-    private List<FileReference> sharedReferences = List.of();
+    private List<FileReference> sharedReferences = new ArrayList<>();
 
     @JsonProperty("sharedWithMeDir")
     private Directory sharedWithMeDir;

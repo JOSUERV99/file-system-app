@@ -6,13 +6,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.operatingsystems.filesystemapp.constants.FileSystemConstants;
-import com.operatingsystems.filesystemapp.model.ActionResult;
 import com.operatingsystems.filesystemapp.model.Drive;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class JSONUtils {
 
@@ -25,6 +23,7 @@ public class JSONUtils {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
@@ -32,8 +31,7 @@ public class JSONUtils {
 
         Map<String, Object> map = new HashMap<String, Object>();
 
-        try
-        {
+        try {
             map = mapper.readValue(jsonString, new TypeReference<HashMap<String, Object>>(){});
         }
         catch (JsonGenerationException e) {
@@ -48,8 +46,7 @@ public class JSONUtils {
     }
 
     public static Drive getFullDrive(String username) {
-
-        String jsonContent = FileHandler.getContentFromPlainTextFile(getPathToDriveFile(username));
+        String jsonContent = FileUtils.getContentFromPlainTextFile(getPathToDriveFile(username));
         var mappedDrive = JSONUtils.castJsonStringToHashMap(jsonContent);
         var drive = ModelUtils.mapToDrive(mappedDrive);
 

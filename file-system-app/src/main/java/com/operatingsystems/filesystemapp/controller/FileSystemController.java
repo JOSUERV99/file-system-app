@@ -1,17 +1,14 @@
 package com.operatingsystems.filesystemapp.controller;
 
 import com.operatingsystems.filesystemapp.model.ActionResult;
-import com.operatingsystems.filesystemapp.model.Directory;
-import com.operatingsystems.filesystemapp.model.PlainTextFile;
-import com.operatingsystems.filesystemapp.service.DirectoryServiceImpl;
 import com.operatingsystems.filesystemapp.service.FileSystemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/fileSystem")
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api/fileSystem")
 public class FileSystemController {
 
     private final FileSystemServiceImpl fileSystemService;
@@ -32,7 +29,7 @@ public class FileSystemController {
         return this.fileSystemService.shareFile(fileId, buddyUserName , ownerUserName);
     }
     
-    @PostMapping(value = "/shareFile/{username}/{fileId}/{virtualDirDestination}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/copyFile/{username}/{fileId}/{virtualDirDestination}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ActionResult copyFile(@PathVariable String username,@PathVariable String virtualDirDestination, @PathVariable String fileId) {
         return this.fileSystemService.copyFromVirtualToVirtual(username, fileId,virtualDirDestination);
     }
