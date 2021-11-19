@@ -6,14 +6,14 @@ import com.operatingsystems.filesystemapp.service.FileSystemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
+import com.operatingsystems.filesystemapp.constants.FileSystemConstants;
 /**
  * FileController
  * Where all the stuff relating to plain text files manipulation requests comes
  */
 @RestController()
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/file")
+@CrossOrigin(origins = "http://localhost:3000")
 public class FileController {
 
     private final FileSystemServiceImpl fileSystemService;
@@ -50,9 +50,9 @@ public class FileController {
         return this.fileSystemService.copyFromVirtualToVirtual(username, fileId,newDirId);
     }
 
-    @PostMapping("/downloadFile/{fileId}")
+    @PostMapping("/downloadFile/{username}/{fileId}")
     //copy vr
-    public ActionResult downloadFile(@PathVariable String username, @PathVariable String fileId, @PathVariable String localDir){
-        return this.fileSystemService.copyFromVirtualToReal(username, fileId, localDir);
+    public ActionResult downloadFile(@PathVariable String username, @PathVariable String fileId){
+        return this.fileSystemService.copyFromVirtualToReal(username, fileId, FileSystemConstants.DEFAULT_FILE_SYSTEM_LOCATION);
     }
 }

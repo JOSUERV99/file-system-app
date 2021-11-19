@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Alert, Button, Container, Row, Col, Modal } from "react-bootstrap";
-import { deleteFile, getDrive } from "../api-calls/UserCall";
+import { deleteFile, downloadFile, getDrive } from "../api-calls/UserCall";
 import { FS_MODE } from "../App";
 
 const style = {
@@ -36,6 +36,19 @@ const AppBar = ({ global }) => {
     }).catch(console.error);
   }
 
+  const handeDownloadFile = () => {
+    const username = glob.username, password = glob.password;
+    
+    downloadFile(username, glob.selectedItem.id).then( ({data}) => {
+      setMessage(data.success ? 'The file was download' : 'The file wasn\'t download');
+      setAction('Download file');
+      setShow(true);
+      return getDrive(username, password);
+    }).then(({data}) => {
+      setGlobal({...glob, driveMode : FS_MODE, drive : data.object, username, password})
+    }).catch(console.error);
+  }
+
   return (
     <div style={style} className="mb-4">
       
@@ -61,6 +74,7 @@ const AppBar = ({ global }) => {
             <Button variant="secondary">Move</Button>{` `}
             <Button variant="secondary">Share</Button>{` `}
             <Button variant="secondary">Copy</Button>{` `}
+            <Button variant="secondary" onClick={() => handeDownloadFile()}>Copy Virtual to Real</Button>{` `}
           </div></Col>
         </Row>
       </Container>
