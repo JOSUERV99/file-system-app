@@ -21,8 +21,6 @@ public class ModelUtils {
     {
         var directory = Directory.instance();
 
-//        System.out.println(mappedObj);
-
         directory.setName((String) mappedObj.get("name"));
         directory.setType((String) mappedObj.get("type"));
         directory.setId((String) mappedObj.get("id"));
@@ -70,8 +68,6 @@ public class ModelUtils {
     public static Drive mapToDrive(Map<String, Object> mappedObj)
     {
         var drive = Drive.instance();
-
-//        System.out.println(mappedObj);
 
         drive.setName((String) mappedObj.get("name"));
         drive.setPassword((String) mappedObj.get("password"));

@@ -1,9 +1,17 @@
 import React from "react";
 
-const FileContentViewer = (props) => {
+const style = {
+    paddingTop: "1%"
+};
+
+const FileContentViewer = ({global}) => {
+
+    const [glob, setGlobal] = global;
+
+    
 
 
-    return <div>FileContentViewer</div>;
+    return <div style={style}>FileContentViewer</div>;
 };
 
 export default FileContentViewer;

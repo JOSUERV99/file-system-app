@@ -70,7 +70,39 @@
                             "content": "asdasdasdasdasdasdadsasd"
                           }
                         ],
-                        "childrenDirectories": []
+                        "childrenDirectories": [ {
+                          "id": "b13asdasdasdasdasdasd",
+                          "name": "madri111",
+                          "type": "directory",
+                          "files": [
+                            {
+                              "id": "6ee58e29-8159-4201-91a8-6aasdasdasdas",
+                              "type": "plainTextFile",
+                              "name": "byeWorld",
+                              "extension": "txt",
+                              "bytesSize": "1024L",
+                              "createdDate": "2021-11-17T21:09:02.317940700",
+                              "content": "asdasdasdasdasdasdadsasd"
+                            }
+                          ],
+                          "childrenDirectories": [ {
+                            "id": "b13asdasdasdasdasdasd",
+                            "name": "madri111",
+                            "type": "directory",
+                            "files": [
+                              {
+                                "id": "6ee58e29-8159-4201-91a8-6aasdasdasdas",
+                                "type": "plainTextFile",
+                                "name": "byeWorld",
+                                "extension": "txt",
+                                "bytesSize": "1024L",
+                                "createdDate": "2021-11-17T21:09:02.317940700",
+                                "content": "asdasdasdasdasdasdadsasd"
+                              }
+                            ],
+                            "childrenDirectories": []
+                          }]
+                        }]
                       }
                 ]
               }

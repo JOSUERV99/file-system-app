@@ -2,7 +2,6 @@ package com.operatingsystems.filesystemapp.controller;
 
 import com.operatingsystems.filesystemapp.model.ActionResult;
 import com.operatingsystems.filesystemapp.model.Directory;
-import com.operatingsystems.filesystemapp.model.PlainTextFile;
 import com.operatingsystems.filesystemapp.service.DirectoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,8 +24,7 @@ public class DirectoryController {
     }
 
     @GetMapping(value = "/getDirectory/{username}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Directory getDirectory(@PathVariable String username)
-    {
+    public Directory getDirectory(@PathVariable String username) {
         return this.directoryService.getDirectory(username);
     }
 
