@@ -31,7 +31,7 @@ const FileSystemViewer = ({global}) => {
     )
 
     return (
-        <div style={{position: "fixed", x:0, y:0, height: "100%"}} className="mt-4" >
+        <div style={{position: "fixed", x:0, y:0, height: "100%", zoom: "125%"}} className="mt-4 border border" >
             {
                 glob.selectedItem &&
                 <Alert variant='info'>{glob.selectedItem.name  || '(No name specified)'}</Alert>

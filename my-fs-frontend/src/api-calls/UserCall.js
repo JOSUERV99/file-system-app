@@ -11,3 +11,9 @@ export const createFile = (filename, content) => axios.post(`${getUrl()}/TODO`);
 
 export const copyFile = (username, fileId, virtualDirDestination) => axios.post(`${getUrl()}/copyFile/${username}/${fileId}/${virtualDirDestination}`);
 export const shareFile = (buddyUserName, ownerUserName, fileId) => axios.post(`${getUrl()}/shareFile/${buddyUserName}/${ownerUserName}/${fileId}`);
+
+export const getSharedFiles = (username) => axios.post(`${getUrl()}/getSharedFiles/${username}`);
+
+export const modifyFileContent = (username, fileId) => axios.post(`${getUrl()}/modifyFileContent/${username}/${fileId}`);
+export const moveFile = (username, fileId, oldDirId, newDirId) => axios.post(`${getUrl()}/moveFile/${username}/${fileId}/${oldDirId}/${newDirId}`);
+
