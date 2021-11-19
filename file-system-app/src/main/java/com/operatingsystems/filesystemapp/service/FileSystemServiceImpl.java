@@ -214,7 +214,7 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     public void createRealFile(PlainTextFile file, String path) throws IOException{
-        FileWriter myWriter = new FileWriter(path+"/"+file.getName()+file.getExtension());
+        FileWriter myWriter = new FileWriter(path+"/"+file.getName()+"."+file.getExtension());
         myWriter.write(file.getContent());
         myWriter.close();
     }
