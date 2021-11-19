@@ -37,6 +37,9 @@ public class FileSystemServiceImpl implements FileSystemService {
     public ActionResult removeFile(final String username, final String fileId) {
         var drive = JSONUtils.getFullDrive(username);
         ActionResult result = searchAndRemoveFile(drive.getRootDir(), fileId);
+        if(result == null){
+            return ActionResult.instance().setSuccess(false);
+        }
         JSONUtils.saveDriveOrReplace(drive);
         return result;
     }
@@ -50,7 +53,7 @@ public class FileSystemServiceImpl implements FileSystemService {
                         .setMetadata(dir); // return success, the file and the parent dir
             }
         }
-        Object auxObject = null;
+        ActionResult auxObject = null;
         for(Directory childDir : dir.getChildrenDirectories()){ // Iterates on the directories
             if(childDir.getId().equals(fileId)){ // If this is the one
                 dir.getChildrenDirectories().remove(childDir); // Delete it
@@ -58,10 +61,11 @@ public class FileSystemServiceImpl implements FileSystemService {
                         .setSuccess(true)
                         .setObject(childDir)
                         .setMetadata(dir); // return success, the file and the parent dir
+            }else{
+                auxObject = searchAndRemoveFile(childDir, fileId); // in case is not the one, calls the function with the childDir
             }
-            auxObject =  searchAndRemoveFile(childDir, fileId); // in case is not the one, calls the function with the childDir
         }
-        return ActionResult.instance().setSuccess(false).setObject(auxObject); //If never found, return not success and null
+        return auxObject; //If never found, return not success and null
     }
 
     @Override
