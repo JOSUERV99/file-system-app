@@ -27,7 +27,7 @@ export const Login = ({global}) => {
         <div className="Login">
             <Modal show={true} fullscreen={true}>
                 <Modal.Header closeButton>
-                    <Modal.Title>XD</Modal.Title>
+                    <Modal.Title>Inicio de sesion de usuario</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form className="p-4">
