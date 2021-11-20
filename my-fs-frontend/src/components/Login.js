@@ -4,8 +4,9 @@ import { getDrive } from "../api-calls/UserCall";
 
 import "../style/Login.css";
 
-import { getUrl } from "../api-calls/UserCall";
 import { FS_MODE, SIGNIN_MODE, SIGNUP_MODE } from "../App";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
 
 export const Login = ({global}) => {
 
@@ -49,6 +50,7 @@ export const Login = ({global}) => {
                             />
                         </Form.Group>
                         <Button block size="lg" type="" className="mt-4 bg-info btn btn-outline" onClick={() => handleSubmit()}>
+                            <FontAwesomeIcon icon={faDoorOpen} />
                             Go to my FS!
                         </Button>
                     </Form>

@@ -14,9 +14,12 @@ const FileContentViewer = ({global}) => {
 
     return (
         <div style={style}>
+            
             {
                 glob.fileMode == EDIT_MODE &&
                 <div>
+                    <div className="mt-4"></div>
+                    <br />
                     <Form>
                         <Form.Group className="mb-3" controlId="fileEditor">
                             <Form.Label>Edit file content</Form.Label>

@@ -1,18 +1,25 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Container,
-  Row,
-  Col,
-  Modal,
-  Form,
-} from "react-bootstrap";
+import { Button, Container, Row, Col, Modal, Form } from "react-bootstrap";
 import {
   deleteFile,
   downloadFile,
   getDrive,
   newDirectory,
 } from "../api-calls/UserCall";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faAmericanSignLanguageInterpreting,
+  faArchive,
+  faArrowAltCircleDown,
+  faArrowsAlt,
+  faCopy,
+  faDoorClosed,
+  faFile,
+  faFileArchive,
+  faScroll,
+  faShare,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FS_MODE } from "../App";
 
 const style = {
@@ -124,6 +131,7 @@ const AppBar = ({ global }) => {
         <Modal.Body>{message}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>
+            <FontAwesomeIcon icon={faDoorClosed} />
             Close
           </Button>
         </Modal.Footer>
@@ -138,23 +146,33 @@ const AppBar = ({ global }) => {
         </Modal.Header>
         <Modal.Body>
           <Row>
-            <Col><h5>File name:</h5> </Col>
+            <Col>
+              <h5>File name:</h5>{" "}
+            </Col>
             <Col>{glob.selectedItem?.name}</Col>
           </Row>
           <Row>
-            <Col><h5>Extension:</h5> </Col>
+            <Col>
+              <h5>Extension:</h5>{" "}
+            </Col>
             <Col>{glob.selectedItem?.extension}</Col>
           </Row>
           <Row>
-            <Col><h5>Size (bytes):</h5> </Col>
-            <Col>{glob.selectedItem?.content.length}</Col>
+            <Col>
+              <h5>Size (bytes):</h5>{" "}
+            </Col>
+            <Col>{glob.selectedItem?.content?.length}</Col>
           </Row>
           <Row>
-            <Col><h5>Creation date:</h5></Col>
+            <Col>
+              <h5>Creation date:</h5>
+            </Col>
             <Col>{glob.selectedItem?.createdDate}</Col>
           </Row>
           <Row>
-            <Col><h5>Modified date:</h5></Col>
+            <Col>
+              <h5>Modified date:</h5>
+            </Col>
             <Col>{glob.selectedItem?.modifiedDate}</Col>
           </Row>
         </Modal.Body>
@@ -163,6 +181,8 @@ const AppBar = ({ global }) => {
             variant="secondary"
             onClick={() => setShowViewProperties(false)}
           >
+            <FontAwesomeIcon icon={faDoorClosed} />
+            {` `}
             Close
           </Button>
         </Modal.Footer>
@@ -195,42 +215,68 @@ const AppBar = ({ global }) => {
 
       <Container>
         <Row>
-          <Col>
+          <Col md={5} lg={5}>
             {" "}
-            <span className="h1"> U File-System App! </span>
+            <span className="h2"><FontAwesomeIcon icon={faFileArchive} size={"lg"} spin={true}/>{`     `}File-System App!</span>
           </Col>
+        </Row>
+        <Row className="mt-2">
           <Col>
             {" "}
             <div className="d-inline">
-              <Button variant="secondary">New File</Button>
+              <Button variant="success">
+                <FontAwesomeIcon icon={faFile} />
+                {` `}
+                New File
+              </Button>
               {` `}
               <Button
-                variant="secondary"
+                variant="primary"
                 disabled={glob.selectedItem?.type != "directory"}
                 onClick={() => setShowDir(true)}
               >
+                <FontAwesomeIcon icon={faArchive} />
+                {` `}
                 New Directory
               </Button>
               {` `}
               <Button variant="danger" onClick={() => handleDeleteFile}>
+                <FontAwesomeIcon icon={faTrash} />
+                {` `}
                 Delete selected
               </Button>
               {` `}
-              <Button variant="secondary">Move</Button>
+              <Button variant="warning">
+                <FontAwesomeIcon icon={faArrowsAlt} />
+                {` `}
+                Move
+              </Button>
               {` `}
-              <Button variant="secondary">Share</Button>
+              <Button variant="warning">
+                <FontAwesomeIcon icon={faShare} />
+                {` `}
+                Share
+              </Button>
               {` `}
-              <Button variant="secondary">Copy</Button>
+              <Button variant="warning">
+                <FontAwesomeIcon icon={faCopy} />
+                {` `}
+                Copy
+              </Button>
               {` `}
-              <Button variant="secondary" onClick={() => handLeDownloadFile()}>
+              <Button variant="warning" onClick={() => handLeDownloadFile()}>
+                <FontAwesomeIcon icon={faAmericanSignLanguageInterpreting} />
+                {` `}
                 Copy Virtual to Real
               </Button>
               {` `}
               <Button
-                variant="secondary"
+                variant="warning"
                 disabled={glob.selectedItem?.type == "directory"}
                 onClick={() => setShowViewProperties(true)}
               >
+                <FontAwesomeIcon icon={faScroll}/>
+                {` `}
                 Show properties
               </Button>
               {` `}
