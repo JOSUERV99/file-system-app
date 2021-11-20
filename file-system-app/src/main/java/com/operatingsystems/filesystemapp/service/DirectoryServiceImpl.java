@@ -50,10 +50,11 @@ public class DirectoryServiceImpl implements DirectoryService {
 
         return dir;
     }
-    @Override
-    public ActionResult createVirtualDirectory(final String username, final String dirName, final String dirId, final Directory newDir) {
 
-        newDir.setId(UUID.randomUUID().toString()).setName(dirName);
+    @Override
+    public ActionResult createVirtualDirectory(final String username, final String dirName, final String dirId) {
+
+        var newDir = Directory.instance().setId(UUID.randomUUID().toString()).setName(dirName);
         var drive = JSONUtils.getFullDrive(username);
         Object dirToInsert = fileSystemServiceImpl.searchFile(drive.getRootDir(), dirId);
 

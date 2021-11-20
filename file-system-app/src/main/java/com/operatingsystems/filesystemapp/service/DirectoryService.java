@@ -9,7 +9,5 @@ public interface DirectoryService {
 
     Directory createDirectory(final String username);
 
-    ActionResult createVirtualDirectory(final String username, final String dirName, final String dirId, final Directory newDir);
-
-    // TODO : add all functions related to directories
+    ActionResult createVirtualDirectory(final String username, final String dirName, final String dirId);
 }
