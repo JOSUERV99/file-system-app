@@ -64,6 +64,17 @@ const AppBar = ({ global }) => {
     }).catch(console.error);
   }
 
+  const handleShowProperties = () => {
+    //ombre, Extensión, Fecha de Creación, Fecha de Modificación y tamaño. 
+    const item = glob.selectedItem;
+    alert(`
+    Name : ${item.name},
+    Extension : ${item.extension},
+    CreationDate: ${item.createdDate},
+    ModifiedDate: ${item.modifiedDate},
+    bytesSize : ${item.bytesSize}`)
+  }
+
   return (
     <div style={style} className="mb-4">
       
@@ -90,6 +101,7 @@ const AppBar = ({ global }) => {
             <Button variant="secondary">Share</Button>{` `}
             <Button variant="secondary">Copy</Button>{` `}
             <Button variant="secondary" onClick={() => handeDownloadFile()}>Copy Virtual to Real</Button>{` `}
+            <Button variant="secondary" disabled={glob.selectedItem.type == "directory"} onClick={()=>handleShowProperties()}>Show properties</Button>{` `}
           </div></Col>
         </Row>
       </Container>
