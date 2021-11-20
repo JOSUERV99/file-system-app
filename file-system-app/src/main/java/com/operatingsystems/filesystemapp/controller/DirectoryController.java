@@ -28,9 +28,9 @@ public class DirectoryController {
         return this.directoryService.getDirectory(username);
     }
 
-    @PostMapping("/createDirectory/{username}/{DirId}")
-    public ActionResult createDir(@PathVariable String username, @PathVariable String DirId, @RequestBody Directory newDir) {
-        return this.directoryService.createVirtualDirectory(username, DirId, newDir);
+    @PostMapping("/createDirectory/{username}/{dirName}/{DirId}")
+    public ActionResult createDir(@PathVariable String username, @PathVariable String dirName, @PathVariable String DirId, @RequestBody Directory newDir) {
+        return this.directoryService.createVirtualDirectory(username, dirName, DirId, newDir);
     }
 
 }

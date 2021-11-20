@@ -17,3 +17,4 @@ export const modifyFileContent = (username, fileId) => axios.post(`${getUrl()}/m
 export const moveFile = (username, fileId, oldDirId, newDirId) => axios.post(`${getUrl()}/moveFile/${username}/${fileId}/${oldDirId}/${newDirId}`);
 
 export const downloadFile = (username, fileId) => axios.post(`${getUrl()}/file/downloadFile/${username}/${fileId}`);
+export const newDirectory =  (username, dirName, dirId) => axios.post(`${getUrl()}/dir/createDirectory/${username}/${dirName}/${dirId}`);

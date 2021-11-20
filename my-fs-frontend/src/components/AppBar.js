@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Alert, Button, Container, Row, Col, Modal } from "react-bootstrap";
-import { deleteFile, downloadFile, getDrive } from "../api-calls/UserCall";
+import { deleteFile, downloadFile, getDrive, newDirectory} from "../api-calls/UserCall";
 import { FS_MODE } from "../App";
 
 const style = {
@@ -19,6 +19,8 @@ const AppBar = ({ global }) => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [newDirectoryName, setNewDirectoryName] = useState('Nueva Carpeta');
 
   const [message, setMessage] = useState('');
   const [action, setAction] = useState('');
@@ -49,6 +51,19 @@ const AppBar = ({ global }) => {
     }).catch(console.error);
   }
 
+  const handleNewDirectory = () => {
+    const username = glob.username, password = glob.password, dirId = glob.selectedItem.id;
+    newDirectory(username, newDirectoryName, glob.selectedItem.id).then(({data}) => {
+      setMessage(data.success ? `The directory ${newDirectoryName} was created` : `The directory ${newDirectoryName}  wasn\'t created`);
+      setAction('Create directory');
+      setShow(true);
+      return getDrive(username, password);
+    }).then(({data}) => {
+      alert(JSON.stringify(data));
+      setGlobal({...glob, driveMode : FS_MODE, drive : data.object, username, password})
+    }).catch(console.error);
+  }
+
   return (
     <div style={style} className="mb-4">
       
@@ -69,8 +84,8 @@ const AppBar = ({ global }) => {
           <Col> <span className="h1"> U File-System App! </span></Col>
           <Col> <div className="d-inline">
             <Button variant="secondary">New File</Button>{` `}
-            <Button variant="secondary">New Directory</Button>{` `}
-            <Button variant="danger" onClick={() => handleDeleteFile()}>Delete selected</Button>{` `}
+            <Button variant="secondary" disabled={glob.selectedItem.type != "directory"} onClick={()=>handleNewDirectory()}>New Directory</Button>{` `}
+            <Button variant="danger" onClick={() => handleDeleteFile}>Delete selected</Button>{` `}
             <Button variant="secondary">Move</Button>{` `}
             <Button variant="secondary">Share</Button>{` `}
             <Button variant="secondary">Copy</Button>{` `}
