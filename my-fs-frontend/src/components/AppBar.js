@@ -5,6 +5,7 @@ import {
   downloadFile,
   getDrive,
   newDirectory,
+  newFile,
 } from "../api-calls/UserCall";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -102,7 +103,13 @@ const AppBar = ({ global }) => {
     var textFile = /text.*/;
     if (file.type.match(textFile)) {
       reader.onload = function (event) {
-        alert(event.target.result);
+        let fileNameArray = file.name.split(".");
+		fileNameArray.pop();
+		let fileName = fileNameArray.join(".");
+        let fileContent = event.target.result;
+        uploadFile(fileName ,fileContent);
+        //alert(fileName);
+        
       }
       
     }else{
@@ -111,6 +118,32 @@ const AppBar = ({ global }) => {
     reader.readAsText(file);
     e.target.value = null;
   };
+
+  function uploadFile(fileName, fileContent) {
+    
+    const username = glob.username,
+    	  password = glob.password;
+	//username, dirId,fileName, fileContent
+    newFile(username, glob.selectedItem.id, fileName, fileContent)
+      .then(({ data }) => {
+        setMessage(
+          data.success ? "The file was upload" : "The file wasn't upload"
+        );
+        setAction("Upload file");
+        setShow(true);
+        return getDrive(username, password);
+      })
+      .then(({ data }) => {
+        setGlobal({
+          ...glob,
+          driveMode: FS_MODE,
+          drive: data.object,
+          username,
+          password,
+        });
+      })
+      .catch(console.error);
+  }
 
   const openFileExplorer = () => {
     document.querySelector('input[type=file]').click();

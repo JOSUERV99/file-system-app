@@ -18,3 +18,15 @@ export const moveFile = (username, fileId, oldDirId, newDirId) => axios.post(`${
 
 export const downloadFile = (username, fileId) => axios.post(`${getUrl()}/file/downloadFile/${username}/${fileId}`);
 export const newDirectory =  (username, dirName, dirId) => axios.post(`${getUrl()}/dir/createDirectory/${username}/${dirName}/${dirId}`);
+
+export const newFile = (username, dirId,fileName, fileContent) => axios({
+    //localhost:8080/api/file/createFile/madri/f3af1faf-94e5-43db-8466-2d5f62a16dd3
+    method: 'post',
+    url: `${getUrl()}/file/createFile/${username}/${dirId}`, 
+    headers: {},
+    data: { 
+        'name' : fileName,
+        'content': fileContent
+    }
+    }
+    );
