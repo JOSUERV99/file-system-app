@@ -57,14 +57,12 @@ public class FileUtils {
     }
 
     public static File[] getFiles(){
-        String[] pathnames;
         File dir = new File(FileSystemConstants.DEFAULT_DRIVES_LOCATION);
         File[] files = dir.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 return name.toLowerCase().endsWith(".json");
             }
         });
-//        pathnames = f.list();
         return files;
     }
 }
