@@ -8,9 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.io.File;
+import java.util.*;
 
 @Service
 @Component(value = "driveService")
@@ -86,4 +85,15 @@ public class DriveServiceImpl implements DriveService {
         return ActionResult.instance().setSuccess(true).setObject(drive.getSharedWithMeDir());
     }
 
+    @Override
+    public ActionResult getAllDrives(){
+        File[] files = FileUtils.getFiles();
+        Map<String, String> to_return = new HashMap<String, String>();
+        for(File file : files){
+            String file_name = file.getName().substring(0, file.getName().length() - 5);
+            var drive = JSONUtils.getFullDrive(file_name);
+            to_return.put(file_name, drive.getId());
+        }
+        return ActionResult.instance().setSuccess(true).setObject(to_return);
+    }
 }

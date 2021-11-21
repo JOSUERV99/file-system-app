@@ -104,14 +104,11 @@ const AppBar = ({ global }) => {
     if (file.type.match(textFile)) {
       reader.onload = function (event) {
         let fileNameArray = file.name.split(".");
-		fileNameArray.pop();
-		let fileName = fileNameArray.join(".");
+        fileNameArray.pop();
+        let fileName = fileNameArray.join(".");
         let fileContent = event.target.result;
         uploadFile(fileName ,fileContent);
-        //alert(fileName);
-        
       }
-      
     }else{
       alert("It doesn't seem to be a text file");
     }
