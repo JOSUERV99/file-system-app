@@ -21,7 +21,7 @@ const FileSystemViewer = ({global}) => {
     }
 
     const handlePath = (p) => setPath(p);
-    
+    const handelDrag = (e) => {alert(e)};
 
     const mapFile = (file) => <Tree.File id={file.id} name={file.name || '(No name specified)'} extra={file.bytesSize} onClick={() => setFSItem(file)}></Tree.File>;
     const mapDir = (dir) => (
