@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Container, Row, Col, Modal, Form } from "react-bootstrap";
+import React, { useState,useRef  } from "react";
+import { Button, Container, Row, Col, Modal, Form, Alert } from "react-bootstrap";
 import {
   deleteFile,
   downloadFile,
@@ -43,6 +43,8 @@ const AppBar = ({ global }) => {
 
   const [message, setMessage] = useState("");
   const [action, setAction] = useState("");
+
+  const inputFile = useRef(null) 
 
   const handleDeleteFile = () => {
     const username = glob.username,
@@ -94,6 +96,26 @@ const AppBar = ({ global }) => {
       .catch(console.error);
   };
 
+  const handleUploadFile = (e) => {
+    var file = document.querySelector('input[type=file]').files[0];
+    var reader = new FileReader()
+    var textFile = /text.*/;
+    if (file.type.match(textFile)) {
+      reader.onload = function (event) {
+        alert(event.target.result);
+      }
+      
+    }else{
+      alert("It doesn't seem to be a text file");
+    }
+    reader.readAsText(file);
+    e.target.value = null;
+  };
+
+  const openFileExplorer = () => {
+    document.querySelector('input[type=file]').click();
+  };
+
   const handleNewDirectory = () => {
     const username = glob.username,
       password = glob.password,
@@ -124,6 +146,7 @@ const AppBar = ({ global }) => {
 
   return (
     <div style={style} className="mb-4">
+      <input type="file" ref={inputFile} style={{display: 'none'}} onChange={(e) => handleUploadFile(e)} />
       <Modal show={show} onHide={() => setShow(false)}>
         <Modal.Header closeButton>
           <Modal.Title>{action}</Modal.Title>
@@ -268,6 +291,12 @@ const AppBar = ({ global }) => {
                 <FontAwesomeIcon icon={faAmericanSignLanguageInterpreting} />
                 {` `}
                 Copy Virtual to Real
+              </Button>
+              {` `}
+              <Button variant="warning" onClick={() => openFileExplorer()}>
+                <FontAwesomeIcon icon={faAmericanSignLanguageInterpreting} />
+                {` `}
+                Copy Real to Virtual
               </Button>
               {` `}
               <Button
