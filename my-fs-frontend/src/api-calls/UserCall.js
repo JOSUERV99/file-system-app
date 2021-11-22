@@ -40,3 +40,13 @@ export const modifyFile = (username, fileId, fileContent) => axios(
     }
     }
 );
+export const createUser = (username, password) => axios(
+    {
+    method: 'post',
+    url: `${getUrl()}/drive/createDrive/${username}`, 
+    headers: {},
+    data: {
+        'password': password
+    }
+    }
+);

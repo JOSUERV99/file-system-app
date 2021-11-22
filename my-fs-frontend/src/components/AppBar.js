@@ -161,7 +161,8 @@ const AppBar = ({ global }) => {
             : `The directory ${newDirectoryName}  wasn\'t created`
         );
         setAction("Create directory");
-        setShow(true);
+        setShowDir(false);
+		setShow(true);
         return getDrive(username, password);
       })
       .then(({ data }) => {
