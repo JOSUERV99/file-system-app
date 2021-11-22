@@ -48,7 +48,7 @@ const FileSystemViewer = ({ global }) => {
             getSharedFiles(username)
             .then(({ data }) => {
                 // setGlobal({...glob, drive : {...glob.drive, shareWithMeDir: data.object}})
-                data.success ? showNotification("Shared files updated", "is-success") : showNotification("Shared files not updated", "is-danger")
+                // data.success ? showNotification("Shared files updated", "is-success") : showNotification("Shared files not updated", "is-danger")
                 return getDrive(username, password);
             }).then(({ data }) => {
                 setGlobal({
