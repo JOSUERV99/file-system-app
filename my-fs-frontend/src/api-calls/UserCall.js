@@ -30,3 +30,13 @@ export const newFile = (username, dirId,fileName, fileContent) => axios({
     }
     }
     );
+export const modifyFile = (username, fileId, fileContent) => axios(
+    {
+    method: 'post',
+    url: `${getUrl()}/file/modifyFileContent/${username}/${fileId}`, 
+    headers: {},
+    data: {
+        'content': fileContent
+    }
+    }
+);

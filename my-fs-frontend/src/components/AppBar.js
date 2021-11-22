@@ -6,6 +6,7 @@ import {
   getDrive,
   newDirectory,
   newFile,
+  modifyFile,
 } from "../api-calls/UserCall";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -39,6 +40,8 @@ const AppBar = ({ global }) => {
   const [show, setShow] = useState(false);
   const [showDir, setShowDir] = useState(false);
   const [showViewProperties, setShowViewProperties] = useState(false);
+  const [showNewFile, setShowNewFile] = useState(false);
+  const [newFileName, setNewFileName] = useState("New File");
 
   const [newDirectoryName, setNewDirectoryName] = useState("Nueva Carpeta");
 
@@ -104,14 +107,11 @@ const AppBar = ({ global }) => {
     if (file.type.match(textFile)) {
       reader.onload = function (event) {
         let fileNameArray = file.name.split(".");
-		fileNameArray.pop();
-		let fileName = fileNameArray.join(".");
+        fileNameArray.pop();
+        let fileName = fileNameArray.join(".");
         let fileContent = event.target.result;
         uploadFile(fileName ,fileContent);
-        //alert(fileName);
-        
       }
-      
     }else{
       alert("It doesn't seem to be a text file");
     }
@@ -175,6 +175,66 @@ const AppBar = ({ global }) => {
         });
       })
       .catch(console.error);
+  };
+
+  const handleNewFile = () => {
+	const username = glob.username,
+      password = glob.password,
+      dirId = glob.selectedItem.id;
+    newFile(username, glob.selectedItem.id, newFileName, "")
+      .then(({ data }) => {
+        setMessage(
+          data.success
+            ? `The file  ${newFileName} was created`
+            : `The directory ${newFileName}  wasn\'t created`
+        );
+        setAction("Create File");
+        setShow(true);
+		setNewFileName("New File")
+        return getDrive(username, password);
+      })
+      .then(({ data }) => {
+        //alert(JSON.stringify(data));
+        setGlobal({
+          ...glob,
+          driveMode: FS_MODE,
+          drive: data.object,
+          username,
+          password,
+        });
+      })
+      .catch(console.error);
+  };
+
+  const handleSaveFile = () => {
+	
+	const username = glob.username,
+      password = glob.password,
+      dirId = glob.selectedItem.id;
+	  modifyFile(username, glob.selectedItem.id, glob.selectedItem.content)
+      .then(({ data }) => {
+        setMessage(
+          data.success
+            ? `The file  ${newFileName} was updated`
+            : `The directory ${newFileName}  wasn\'t updated`
+        );
+        setAction("MOdify File");
+        setShow(true);
+		setNewFileName("New File")
+        return getDrive(username, password);
+      })
+      .then(({ data }) => {
+        //alert(JSON.stringify(data));
+        setGlobal({
+          ...glob,
+          driveMode: FS_MODE,
+          drive: data.object,
+          username,
+          password,
+        });
+      })
+      .catch(console.error);
+
   };
 
   return (
@@ -269,6 +329,31 @@ const AppBar = ({ global }) => {
         </Modal.Footer>
       </Modal>
 
+	  <Modal show={showNewFile} onHide={() => setShowNewFile(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group as={Col} controlId="formGridEmail">
+            <Form.Label>Enter the name of the new file:</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              value={newFileName}
+              onChange={(e) => setNewFileName(e.target.value)}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={() => handleNewFile()}>
+            Create
+          </Button>
+          <Button variant="secondary" onClick={() => setShowNewFile(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <Container>
         <Row>
           <Col md={5} lg={5}>
@@ -280,7 +365,10 @@ const AppBar = ({ global }) => {
           <Col>
             {" "}
             <div className="d-inline">
-              <Button variant="success">
+              <Button variant="success" 
+			  disabled={glob.selectedItem?.type != "directory"}
+			  onClick={() => setShowNewFile(true)}
+			  >
                 <FontAwesomeIcon icon={faFile} />
                 {` `}
                 New File
@@ -340,6 +428,15 @@ const AppBar = ({ global }) => {
                 <FontAwesomeIcon icon={faScroll}/>
                 {` `}
                 Show properties
+              </Button>
+			  <Button
+                variant="warning"
+                disabled={!(glob.selectedItem?.type != "directory" && glob.selectedItem?.change)}
+                onClick={() => handleSaveFile()}
+              >
+                <FontAwesomeIcon icon={faScroll}/>
+                {` `}
+                Save File
               </Button>
               {` `}
             </div>

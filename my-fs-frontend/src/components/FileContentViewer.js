@@ -12,6 +12,13 @@ const FileContentViewer = ({global}) => {
     const [itemType, setItemType] = useState(glob?.selectedItem?.type || null);
     const [selectedItemContent, setSelectedItemContent] = useState(glob?.selectedItem?.content || null);
 
+    const handleTextChange = (event) => {
+        let item = glob.selectedItem;
+        
+        item.change = true;
+        item.content = event.target.value;
+        setGlobal({...glob, selectedItem : item }); 
+    }
     return (
         <div style={style}>
             
@@ -23,7 +30,7 @@ const FileContentViewer = ({global}) => {
                     <Form>
                         <Form.Group className="mb-3" controlId="fileEditor">
                             <Form.Label>Edit file content</Form.Label>
-                            <Form.Control as="textarea" rows={20} size="lg" value={glob.selectedItem?.content || "NO CONTENT"}/>
+                            <Form.Control onChange={handleTextChange} as="textarea"  rows={20} size="lg"  value={glob.selectedItem?.content || ""}/>
                         </Form.Group>
                     </Form>
                 </div>

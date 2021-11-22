@@ -4,6 +4,7 @@ import com.operatingsystems.filesystemapp.constants.FileSystemConstants;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -53,5 +54,15 @@ public class FileUtils {
         }
 
         return lines.stream().collect(Collectors.joining("\n", "", "\n"));
+    }
+
+    public static File[] getFiles(){
+        File dir = new File(FileSystemConstants.DEFAULT_DRIVES_LOCATION);
+        File[] files = dir.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(".json");
+            }
+        });
+        return files;
     }
 }

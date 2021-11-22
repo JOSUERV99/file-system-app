@@ -39,4 +39,9 @@ public class DriveController {
     public ActionResult getSharedWithMeFiles(@PathVariable String userName) {
         return this.driveService.getSharedFiles(userName);
     }
+
+    @GetMapping(value = "/getAllUserNames", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ActionResult getAllDrives() {
+        return this.driveService.getAllDrives();
+    }
 }
