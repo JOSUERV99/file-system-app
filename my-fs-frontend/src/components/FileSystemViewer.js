@@ -62,8 +62,8 @@ const FileSystemViewer = ({ global }) => {
 
     return (
         <div
-            style={{ position: "fixed", x: 0, y: 0, height: "100%", zoom: "120%" }}
-            className="mt-4"
+            style={{position: "fixed", x: 0, y: 0, height: "90%", width : "23%",zoom: "110%",overflowY: "scroll", overflowX: "scroll"  }}
+            className=""
         >
             <div className="mt-4"></div>
 
@@ -79,7 +79,7 @@ const FileSystemViewer = ({ global }) => {
                             {glob.selectedItem.name || "(No name specified)"}
                         </Alert>
                     )}
-                    <Tree initialExpand={true} onClick={handlePath} >
+                    <Tree style = {{display: "inline-block"}} initialExpand={true} onClick={handlePath}>
                         {mapDir(
                             glob.drive.rootDir
                         )}{" "}
