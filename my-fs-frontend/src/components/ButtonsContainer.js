@@ -244,6 +244,7 @@ const ButtonsContainer = ({ global, setMoveFlag }) => {
     };
 
     const handleShareFile = () => {
+        setShareFileGui(false);
         const username = glob.username,
               password = glob.password,
               fileId = glob.selectedItem.id;
