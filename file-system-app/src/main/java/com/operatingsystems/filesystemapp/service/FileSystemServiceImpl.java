@@ -196,18 +196,20 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     @Override
-    public ActionResult moveFile(final String username, final String fileId, final String oldDirId, final String newDirId){
+    public ActionResult moveFile(final String username, final String fileId, final String newDirId){
         var drive = JSONUtils.getFullDrive(username);
-        Directory oldDir = ((Directory)searchFile(drive.getRootDir(), oldDirId));
+//        Directory oldDir = ((Directory)searchFile(drive.getRootDir(), oldDirId));
         Directory newDir = ((Directory)searchFile(drive.getRootDir(), newDirId));
         Object fileToMove = searchFile(drive.getRootDir(), fileId);
-        if(oldDir != null && newDir != null && fileToMove != null){
+        if(newDir != null && fileToMove != null){
             if(fileToMove instanceof Directory){
                 newDir.getChildrenDirectories().add((Directory)fileToMove);
-                oldDir.getChildrenDirectories().remove((Directory)fileToMove);
+                searchAndRemoveFile(drive.getRootDir(), fileId, null);
+//                oldDir.getChildrenDirectories().remove((Directory)fileToMove);
             }else if(fileToMove instanceof PlainTextFile){
                 newDir.getFiles().add((PlainTextFile)fileToMove);
-                oldDir.getFiles().remove((PlainTextFile)fileToMove);
+                searchAndRemoveFile(drive.getRootDir(), fileId, null);
+//                oldDir.getFiles().remove((PlainTextFile)fileToMove);
             }
             JSONUtils.saveDriveOrReplace(drive);
             return ActionResult.instance().setSuccess(true).setObject(newDir);

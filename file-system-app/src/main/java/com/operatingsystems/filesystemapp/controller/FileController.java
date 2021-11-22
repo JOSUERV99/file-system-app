@@ -39,9 +39,9 @@ public class FileController {
         return this.fileSystemService.modifyFileContent(username,fileId , newModifiedFile);
     }
 
-    @PostMapping("/moveFile/{username}/{fileId}/{oldDirId}/{newDirId}")
-    public ActionResult moveFile(@PathVariable String username,@PathVariable String fileId, @PathVariable String oldDirId,@PathVariable String newDirId) {
-        return this.fileSystemService.moveFile(username,fileId , oldDirId, newDirId);
+    @PostMapping("/moveFile/{username}/{fileId}/{newDirId}")
+    public ActionResult moveFile(@PathVariable String username,@PathVariable String fileId,@PathVariable String newDirId) {
+        return this.fileSystemService.moveFile(username,fileId, newDirId);
     }
 
     @PostMapping("/copyFile/{username}/{fileId}/{newDirId}")

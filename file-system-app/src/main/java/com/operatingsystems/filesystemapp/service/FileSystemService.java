@@ -34,7 +34,7 @@ public interface FileSystemService {
 
     ActionResult modifyFileContent(final String username, final String fileId, PlainTextFile newFileModified);
 
-    ActionResult moveFile(final String username, final String fileId, final String oldDirId, final String newDirId);
+    ActionResult moveFile(final String username, final String fileId, final String newDirId);
 
     boolean downloadFile(Directory dir, String path);
 
