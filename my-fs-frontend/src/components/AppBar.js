@@ -341,7 +341,7 @@ const AppBar = ({ global }) => {
         </Modal.Footer>
       </Modal>
 
-	  <Modal show={showNewFile} onHide={() => setShowNewFile(false)}>
+	    <Modal show={showNewFile} onHide={() => setShowNewFile(false)}>
         <Modal.Header closeButton>
           <Modal.Title></Modal.Title>
         </Modal.Header>
@@ -373,14 +373,14 @@ const AppBar = ({ global }) => {
             <span className="h2"><FontAwesomeIcon icon={faFileArchive} size={"lg"} spin={true}/>{`     `}File-System App!</span>
           </Col>
         </Row>
-        <Row className="mt-2">
+        {/* <Row className="mt-2">
           <Col>
             {" "}
-            <div className="d-inline">
+            <div className="">
               <Button variant="success" 
-			  disabled={glob.selectedItem?.type != "directory"}
-			  onClick={() => setShowNewFile(true)}
-			  >
+			                disabled={glob.selectedItem?.type != "directory"}
+			                onClick={() => setShowNewFile(true)}
+			        >
                 <FontAwesomeIcon icon={faFile} />
                 {` `}
                 New File
@@ -453,7 +453,7 @@ const AppBar = ({ global }) => {
               {` `}
             </div>
           </Col>
-        </Row>
+        </Row> */}
       </Container>
     </div>
   );
