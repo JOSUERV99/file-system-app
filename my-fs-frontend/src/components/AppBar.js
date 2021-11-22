@@ -188,9 +188,9 @@ const AppBar = ({ global }) => {
     const username = glob.username,
     password = glob.password,
     dirId = glob.selectedItem.id;
+    setShowNewFile(false);
     newFile(username, dirId, newFileName, "")
       .then(({ data }) => {
-        data.success ? showNotification(`The directory ${newDirectoryName} was created`, "is-success") : showNotification(`The directory ${newDirectoryName}  wasn\'t created`, "is-danger")
         // setMessage(
         //   data.success
         //     ? `The file  ${newFileName} was created`
@@ -198,7 +198,9 @@ const AppBar = ({ global }) => {
         // );
         // setAction("Create File");
         // setShow(true);
-        setNewFileName("New File")
+        setShowNewFile(false);
+        data.success ? showNotification(`The directory ${newDirectoryName} was created`, "is-success") : showNotification(`The directory ${newDirectoryName}  wasn\'t created`, "is-danger")
+		setNewFileName("New File");
         return getDrive(username, password);
       })
       .then(({ data }) => {
