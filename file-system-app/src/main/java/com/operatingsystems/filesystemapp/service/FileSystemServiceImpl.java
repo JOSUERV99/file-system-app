@@ -183,11 +183,12 @@ public class FileSystemServiceImpl implements FileSystemService {
             Object newFile = searchFile(drive.getSharedWithMeDir(), fileReference.getFileId());
             if(fileToChange != null && newFile != null) {
                 if (fileToChange instanceof Directory) {
-                    int idToReplace = ownerDrive.getRootDir().getChildrenDirectories().indexOf(fileToChange);
-                    ownerDrive.getRootDir().getChildrenDirectories().set(idToReplace,(Directory) newFile);
+                    ((Directory) fileToChange)
+                            .setFiles(((Directory)newFile).getFiles())
+                            .setChildrenDirectories(((Directory)newFile).getChildrenDirectories());
                 } else if (fileToChange instanceof PlainTextFile) {
-                    int idToReplace = ownerDrive.getRootDir().getFiles().indexOf(fileToChange);
-                    ownerDrive.getRootDir().getFiles().set(idToReplace,(PlainTextFile) newFile);
+                    ((PlainTextFile) fileToChange)
+                            .setContent(((PlainTextFile)newFile).getContent());
                 }
                 JSONUtils.saveDriveOrReplace(ownerDrive);
             }
