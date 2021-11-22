@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import Tree from "@geist-ui/react/esm/tree";
 import { Alert, Tabs, Tab } from "react-bootstrap";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
-
+import {getSharedFiles, getDrive} from "../api-calls/UserCall";
+import { toast } from 'bulma-toast'
+import { FS_MODE } from "../App";
 const color = {
     background: "#3d747e",
 };
@@ -26,8 +28,42 @@ const FileSystemViewer = ({ global }) => {
         setGlobal({ ...glob, selectedItem: item });
     };
 
+    const showNotification = (message, type) => {
+        toast({
+            message: message,
+            type: type,
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: 'bottom-right',
+            animate: { in: 'fadeIn', out: 'fadeOut' },
+        })
+    }
+
     const handleTabSelection = (k) => {
-        setSelectedTab(k); 
+        setSelectedTab(k);
+        if(k == "sharedWithMe"){
+            const username = glob.username
+            const password = glob.password;
+            getSharedFiles(username)
+            .then(({ data }) => {
+                // setGlobal({...glob, drive : {...glob.drive, shareWithMeDir: data.object}})
+                data.success ? showNotification("Shared files updated", "is-success") : showNotification("Shared files not updated", "is-danger")
+                return getDrive(username, password);
+            }).then(({ data }) => {
+                setGlobal({
+                    ...glob,
+                    driveMode: FS_MODE,
+                    drive: data.object,
+                    username,
+                    password,
+                });
+            })
+            .catch((e) => {
+                console.log(e)
+                showNotification("There was an error updating the shared files, please try again", "is-danger");
+            });
+        }
         setMode(k == "rootDir" ? OWN_MODE : SHARE_MODE)
         setGlobal({ ...glob, selectedItem: mode == OWN_MODE ? glob.drive.rootDir : glob.drive.sharedWithMeDir });
     }

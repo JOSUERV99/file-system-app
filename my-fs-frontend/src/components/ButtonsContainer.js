@@ -62,7 +62,7 @@ const ButtonsContainer = ({ global }) => {
 
     const handleDeleteFile = () => {
         const username = glob.username,
-            password = glob.password;
+        password = glob.password;
         deleteFile(username, glob.selectedItem.id)
             .then(({ data }) => {
                 data.success ? showNotification("The file was deleted", "is-success") : showNotification("The file wasn't deleted", "is-danger")

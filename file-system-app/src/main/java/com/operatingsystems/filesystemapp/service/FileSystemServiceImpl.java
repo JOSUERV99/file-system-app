@@ -2,6 +2,7 @@ package com.operatingsystems.filesystemapp.service;
 
 import com.operatingsystems.filesystemapp.handler.JSONUtils;
 import com.operatingsystems.filesystemapp.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @Service
 public class FileSystemServiceImpl implements FileSystemService {
+
 
     @Override
     public String getFileContent(final String username, final String fileId) {
@@ -161,13 +163,36 @@ public class FileSystemServiceImpl implements FileSystemService {
     public ActionResult modifyFileContent(final String username, final String fileId, PlainTextFile newFileModified) {
         var drive = JSONUtils.getFullDrive(username);
         Object fileToChange = searchFile(drive.getRootDir(), fileId);
+        if(fileToChange == null){
+            fileToChange = searchFile(drive.getSharedWithMeDir(), fileId);
+        }
         if (fileToChange instanceof PlainTextFile){
             ((PlainTextFile) fileToChange).setContent(newFileModified.getContent());
             JSONUtils.saveDriveOrReplace(drive);
             ((PlainTextFile) fileToChange).setModifiedDate(LocalDateTime.now().toString());
+            updateOwnerFile(drive);
             return ActionResult.instance().setSuccess(true).setObject(fileToChange);
         }
         return ActionResult.instance().setSuccess(false).setObject(fileToChange);
+    }
+
+    public void updateOwnerFile(Drive drive){
+        for(FileReference fileReference : drive.getSharedReferences()){
+            var ownerDrive = JSONUtils.getFullDrive(fileReference.getOwnerUsername());
+            Object fileToChange = searchFile(ownerDrive.getRootDir(), fileReference.getFileId());
+            Object newFile = searchFile(drive.getSharedWithMeDir(), fileReference.getFileId());
+            if(fileToChange != null && newFile != null) {
+                if (fileToChange instanceof Directory) {
+                    int idToReplace = ownerDrive.getRootDir().getChildrenDirectories().indexOf(fileToChange);
+                    ownerDrive.getRootDir().getChildrenDirectories().set(idToReplace,(Directory) newFile);
+                } else if (fileToChange instanceof PlainTextFile) {
+                    int idToReplace = ownerDrive.getRootDir().getFiles().indexOf(fileToChange);
+                    ownerDrive.getRootDir().getFiles().set(idToReplace,(PlainTextFile) newFile);
+                }
+                JSONUtils.saveDriveOrReplace(ownerDrive);
+            }
+        }
+
     }
 
     @Override
