@@ -19,7 +19,6 @@ const FileMoveAttendant = ({ global, moveFlag, setMoveFlag }) => {
 
     if (
       item.type === "directory" &&
-      item.name !== glob.username &&
       item.id !== glob.selectedItem?.id
     ) {
       setDirTarget(item);
@@ -42,7 +41,6 @@ const FileMoveAttendant = ({ global, moveFlag, setMoveFlag }) => {
     moveFile(username, fileId, newDirId)
       .then(({ data }) => {
         setMoveFlag(false);
-        alert('AQUI');
         return getDrive(username, password);
       })
       .then(({ data }) => {
