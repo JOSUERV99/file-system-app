@@ -49,9 +49,9 @@ const FileSystemViewer = ({ global }) => {
     return (
         <div
             style={{ position: "fixed", x: 0, y: 0, height: "100%", zoom: "120%" }}
-            className="mt-4"
+            className=""
         >
-            <div className="mt-4"></div>
+            <div className=""></div>
 
             <Tabs
                 id="controlled-tab-example"

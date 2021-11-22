@@ -3,7 +3,7 @@ import { Form } from "react-bootstrap";
 import { EDIT_MODE, EXPLORER_MODE } from "../App";
 
 const style = {
-    paddingTop: "1%"
+    paddingTop: "0%"
 };
 
 const FileContentViewer = ({global}) => {
@@ -25,12 +25,12 @@ const FileContentViewer = ({global}) => {
             {
                 glob.fileMode == EDIT_MODE &&
                 <div>
-                    <div className="mt-4"></div>
+                    <div className=""></div>
                     <br />
                     <Form>
                         <Form.Group className="mb-3" controlId="fileEditor">
                             <Form.Label>Edit file content</Form.Label>
-                            <Form.Control onChange={handleTextChange} as="textarea"  rows={20} size="lg"  value={glob.selectedItem?.content || ""}/>
+                            <Form.Control onChange={handleTextChange} as="textarea" style={{resize: 'none'}}  rows={19} size="lg"  value={glob.selectedItem?.content || ""}/>
                         </Form.Group>
                     </Form>
                 </div>

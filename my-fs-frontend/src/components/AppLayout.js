@@ -25,7 +25,6 @@ const AppLayout = ({global}) => {
                         </Col>
                     </Row>
                     <Row className="m-1">
-                        
                         <Col md={3}> 
                             <FileSystemViewer global={[glob, setGlobal]}/>
                         </Col>
