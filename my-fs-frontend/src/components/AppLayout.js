@@ -6,6 +6,7 @@ import FileSystemViewer from "./FileSystemViewer";
 import { Container, Row, Col,Modal } from 'react-bootstrap';
 import { useState, useEffect } from "react";
 import { Login } from "./Login";
+import { SignIn } from "./SignIn";
 
 import { FS_MODE, SIGNIN_MODE, SIGNUP_MODE } from "../App";
 
@@ -42,7 +43,8 @@ const AppLayout = ({global}) => {
                 <Login global={[glob, setGlobal]}/>
 
                 : glob.driveMode==SIGNUP_MODE ?
-                <h1>SIGNUP</h1>
+ 
+                <SignIn global={[glob, setGlobal]} />
                 :
                 <></>
             }
