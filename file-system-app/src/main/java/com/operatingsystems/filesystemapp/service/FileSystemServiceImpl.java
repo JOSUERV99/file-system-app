@@ -203,12 +203,12 @@ public class FileSystemServiceImpl implements FileSystemService {
         Object fileToMove = searchFile(drive.getRootDir(), fileId);
         if(newDir != null && fileToMove != null){
             if(fileToMove instanceof Directory){
-                newDir.getChildrenDirectories().add((Directory)fileToMove);
                 searchAndRemoveFile(drive.getRootDir(), fileId, null);
+                newDir.getChildrenDirectories().add((Directory)fileToMove);
 //                oldDir.getChildrenDirectories().remove((Directory)fileToMove);
             }else if(fileToMove instanceof PlainTextFile){
-                newDir.getFiles().add((PlainTextFile)fileToMove);
                 searchAndRemoveFile(drive.getRootDir(), fileId, null);
+                newDir.getFiles().add((PlainTextFile)fileToMove);
 //                oldDir.getFiles().remove((PlainTextFile)fileToMove);
             }
             JSONUtils.saveDriveOrReplace(drive);
