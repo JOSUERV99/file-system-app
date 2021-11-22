@@ -9,6 +9,7 @@ import {
   modifyFile,
 } from "../api-calls/UserCall";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { toast } from 'bulma-toast'
 import {
   faAmericanSignLanguageInterpreting,
   faArchive,
@@ -23,6 +24,7 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FS_MODE } from "../App";
+import '../style/AppBar.scss';
 
 const style = {
   position: "fixed",
@@ -50,20 +52,27 @@ const AppBar = ({ global }) => {
 
   const inputFile = useRef(null) 
 
+  const showNotification = (message, type) => {
+    toast({
+      message: message,
+      type: type,
+      dismissible: true,
+      pauseOnHover: true,
+      duration: 2000,
+      position: 'bottom-right',
+      animate: { in: 'fadeIn', out: 'fadeOut' },
+    })
+  }
+
   const handleDeleteFile = () => {
     const username = glob.username,
-      password = glob.password;
+    password = glob.password;
     deleteFile(username, glob.selectedItem.id)
       .then(({ data }) => {
-        setMessage(
-          data.success ? "The file was deleted" : "The file wasn't deleted"
-        );
-        setAction("Delete file");
-        setShow(true);
+        data.success ? showNotification("The file was deleted", "is-success") : showNotification("The file wasn't deleted", "is-danger")
         return getDrive(username, password);
       })
       .then(({ data }) => {
-        alert(JSON.stringify(data));
         setGlobal({
           ...glob,
           driveMode: FS_MODE,
@@ -72,20 +81,17 @@ const AppBar = ({ global }) => {
           password,
         });
       })
-      .catch(console.error);
+      .catch(()=>{
+        showNotification("There was an error deleting the file, please try again", "is-danger");
+      });
   };
 
   const handLeDownloadFile = () => {
     const username = glob.username,
-      password = glob.password;
-
+    password = glob.password;
     downloadFile(username, glob.selectedItem.id)
       .then(({ data }) => {
-        setMessage(
-          data.success ? "The file was download" : "The file wasn't download"
-        );
-        setAction("Download file");
-        setShow(true);
+        data.success ? showNotification("The file was download", "is-success") : showNotification("The file wasn't download", "is-danger")
         return getDrive(username, password);
       })
       .then(({ data }) => {
@@ -97,7 +103,9 @@ const AppBar = ({ global }) => {
           password,
         });
       })
-      .catch(console.error);
+      .catch(()=>{
+        showNotification("There was an error downloading the file, please try again", "is-danger")
+      });
   };
 
   const handleUploadFile = (e) => {
@@ -113,24 +121,18 @@ const AppBar = ({ global }) => {
         uploadFile(fileName ,fileContent);
       }
     }else{
-      alert("It doesn't seem to be a text file");
+      showNotification("It doesn't seem to be a text file", "is-danger")
     }
     reader.readAsText(file);
     e.target.value = null;
   };
 
   function uploadFile(fileName, fileContent) {
-    
     const username = glob.username,
-    	  password = glob.password;
-	//username, dirId,fileName, fileContent
+    password = glob.password;
     newFile(username, glob.selectedItem.id, fileName, fileContent)
       .then(({ data }) => {
-        setMessage(
-          data.success ? "The file was upload" : "The file wasn't upload"
-        );
-        setAction("Upload file");
-        setShow(true);
+        data.success ? showNotification("The file was uploaded", "is-success") : showNotification("The file wasn't uploaded", "is-danger")
         return getDrive(username, password);
       })
       .then(({ data }) => {
@@ -142,7 +144,9 @@ const AppBar = ({ global }) => {
           password,
         });
       })
-      .catch(console.error);
+      .catch(()=>{
+        showNotification("There was an error uploading the file, please try again", "is-danger")
+      });
   }
 
   const openFileExplorer = () => {
@@ -151,21 +155,22 @@ const AppBar = ({ global }) => {
 
   const handleNewDirectory = () => {
     const username = glob.username,
-      password = glob.password,
-      dirId = glob.selectedItem.id;
-    newDirectory(username, newDirectoryName, glob.selectedItem.id)
+    password = glob.password,
+    dirId = glob.selectedItem.id;
+    newDirectory(username, newDirectoryName, dirId)
       .then(({ data }) => {
-        setMessage(
-          data.success
-            ? `The directory ${newDirectoryName} was created`
-            : `The directory ${newDirectoryName}  wasn\'t created`
-        );
-        setAction("Create directory");
-        setShow(true);
+        data.success ? showNotification(`The directory ${newDirectoryName} was created`, "is-success") : showNotification(`The directory ${newDirectoryName}  wasn\'t created`, "is-danger")
+        
+        // setMessage(
+        //   data.success
+        //     ? `The directory ${newDirectoryName} was created`
+        //     : `The directory ${newDirectoryName}  wasn\'t created`
+        // );
+        // setAction("Create directory");
+        // setShow(true);
         return getDrive(username, password);
       })
       .then(({ data }) => {
-        alert(JSON.stringify(data));
         setGlobal({
           ...glob,
           driveMode: FS_MODE,
@@ -174,28 +179,31 @@ const AppBar = ({ global }) => {
           password,
         });
       })
-      .catch(console.error);
+      .catch(()=>{
+        showNotification("There was an error creating the directory, please try again", "is-danger")
+      });
   };
 
   const handleNewFile = () => {
-	const username = glob.username,
-      password = glob.password,
-      dirId = glob.selectedItem.id;
-    newFile(username, glob.selectedItem.id, newFileName, "")
+    const username = glob.username,
+    password = glob.password,
+    dirId = glob.selectedItem.id;
+    setShowNewFile(false);
+    newFile(username, dirId, newFileName, "")
       .then(({ data }) => {
-        setMessage(
-          data.success
-            ? `The file  ${newFileName} was created`
-            : `The directory ${newFileName}  wasn\'t created`
-        );
-        setAction("Create File");
+        // setMessage(
+        //   data.success
+        //     ? `The file  ${newFileName} was created`
+        //     : `The directory ${newFileName}  wasn\'t created`
+        // );
+        // setAction("Create File");
+        // setShow(true);
         setShowNewFile(false);
-		setShow(true);
+        data.success ? showNotification(`The directory ${newDirectoryName} was created`, "is-success") : showNotification(`The directory ${newDirectoryName}  wasn\'t created`, "is-danger")
 		setNewFileName("New File");
         return getDrive(username, password);
       })
       .then(({ data }) => {
-        //alert(JSON.stringify(data));
         setGlobal({
           ...glob,
           driveMode: FS_MODE,
@@ -204,28 +212,29 @@ const AppBar = ({ global }) => {
           password,
         });
       })
-      .catch(console.error);
+      .catch(()=>{
+        showNotification("There was an error creating the file, please try again", "is-danger")
+      });
   };
 
   const handleSaveFile = () => {
-	
-	const username = glob.username,
-      password = glob.password,
-      dirId = glob.selectedItem.id;
-	  modifyFile(username, glob.selectedItem.id, glob.selectedItem.content)
+    const username = glob.username,
+    password = glob.password,
+    dirId = glob.selectedItem.id;
+	  modifyFile(username, dirId, glob.selectedItem.content)
       .then(({ data }) => {
-        setMessage(
-          data.success
-            ? `The file  ${newFileName} was updated`
-            : `The directory ${newFileName}  wasn\'t updated`
-        );
-        setAction("MOdify File");
-        setShow(true);
-		setNewFileName("New File")
+        data.success ? showNotification(`The file  ${newFileName} was saved`, "is-success") : showNotification(`The directory ${newFileName}  wasn\'t saved`, "is-danger")
+        // setMessage(
+        //   data.success
+        //     ? `The file  ${newFileName} was updated`
+        //     : `The directory ${newFileName}  wasn\'t updated`
+        // );
+        // setAction("MOdify File");
+        // setShow(true);
+        setNewFileName("New File")
         return getDrive(username, password);
       })
       .then(({ data }) => {
-        //alert(JSON.stringify(data));
         setGlobal({
           ...glob,
           driveMode: FS_MODE,
@@ -234,7 +243,9 @@ const AppBar = ({ global }) => {
           password,
         });
       })
-      .catch(console.error);
+      .catch(()=>{
+        showNotification("There was an error saving the file, please try again", "is-danger")
+      });
 
   };
 
@@ -385,7 +396,7 @@ const AppBar = ({ global }) => {
                 New Directory
               </Button>
               {` `}
-              <Button variant="danger" onClick={() => handleDeleteFile}>
+              <Button variant="danger" onClick={() => handleDeleteFile()}>
                 <FontAwesomeIcon icon={faTrash} />
                 {` `}
                 Delete selected
