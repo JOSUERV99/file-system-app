@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -163,6 +164,7 @@ public class FileSystemServiceImpl implements FileSystemService {
         if (fileToChange instanceof PlainTextFile){
             ((PlainTextFile) fileToChange).setContent(newFileModified.getContent());
             JSONUtils.saveDriveOrReplace(drive);
+            ((PlainTextFile) fileToChange).setModifiedDate(LocalDateTime.now().toString());
             return ActionResult.instance().setSuccess(true).setObject(fileToChange);
         }
         return ActionResult.instance().setSuccess(false).setObject(fileToChange);
