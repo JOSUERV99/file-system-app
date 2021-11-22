@@ -8,7 +8,7 @@ export const deleteFile = (username, fileId) => axios.delete(`${getUrl()}/fileSy
 // TODO: fix on backend to avoi pass the full text plain with properties, only pass name and content
 export const createFile = (filename, content) => axios.post(`${getUrl()}/TODO`);
 
-export const copyFile = (username, fileId, virtualDirDestination) => axios.post(`${getUrl()}/copyFile/${username}/${fileId}/${virtualDirDestination}`);
+export const copyFile = (username, fileId, virtualDirDestination) => axios.post(`${getUrl()}/fileSystem/copyFile/${username}/${fileId}/${virtualDirDestination}`);
 export const shareFile = (buddyUserName, ownerUserName, fileId) => axios.post(`${getUrl()}/fileSystem/shareFile/${buddyUserName}/${ownerUserName}/${fileId}`);
 
 export const getSharedFiles = (username) => axios.get(`${getUrl()}/drive/getSharedFiles/${username}`);

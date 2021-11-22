@@ -31,7 +31,7 @@ const style = {
     paddingTop: "1%"
 };
 
-const ButtonsContainer = ({ global, setMoveFlag }) => {
+const ButtonsContainer = ({ global, setMoveFlag, setCopyFlag }) => {
     const [glob, setGlobal] = global;
 
     // modals flags
@@ -151,6 +151,7 @@ const ButtonsContainer = ({ global, setMoveFlag }) => {
     };
 
     const handleNewDirectory = () => {
+        setShowDir(false);
         const username = glob.username,
             password = glob.password,
             dirId = glob.selectedItem.id;
@@ -203,11 +204,9 @@ const ButtonsContainer = ({ global, setMoveFlag }) => {
         const username = glob.username,
             password = glob.password,
             dirId = glob.selectedItem.id;
-        alert(username+ dirId+ glob.selectedItem.content);
         modifyFile(username, dirId, glob.selectedItem.content)
             .then(({ data }) => {
                 data.success ? showNotification(`The file  ${newFileName} was saved`, "is-success") : showNotification(`The directory ${newFileName}  wasn\'t saved`, "is-danger");
-                alert(data);
                 setNewFileName("New File")
                 return getDrive(username, password);
             })
@@ -461,7 +460,9 @@ const ButtonsContainer = ({ global, setMoveFlag }) => {
                     Share
                 </Button>
                 <br/>
-                <Button variant="warning" className = "my-2 w-100">
+                <Button variant="warning" className = "my-2 w-100" 
+                    disabled={glob.selectedItem?.type == "directory"}
+                    onClick={(e) => {e.target.value = null;setCopyFlag(true);} }>
                     <FontAwesomeIcon icon={faCopy} />
                     {` `}
                     Copy

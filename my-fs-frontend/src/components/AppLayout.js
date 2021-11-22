@@ -4,7 +4,7 @@ import ButtonsContainer from "./ButtonsContainer";
 import FileContentViewer from "./FileContentViewer";
 import FileSystemViewer from "./FileSystemViewer";
 import FileMoveAttendant from "./FileMoveAttendant";
-
+import FileCopyAttendant from "./FileCopyAttendant";
 import { Container, Row, Col } from 'react-bootstrap';
 import { useState } from "react";
 import { Login } from "./Login";
@@ -12,7 +12,7 @@ import { SignIn } from "./SignIn";
 
 import { FS_MODE, SIGNIN_MODE, SIGNUP_MODE } from "../App";
 
-export const STANDARD_MODE = 0, MOVE_MODE = 1;
+export const STANDARD_MODE = 0, MOVE_MODE = 1, COPY_MODE = 2;
 
 const AppLayout = ({global}) => {
 
@@ -20,9 +20,12 @@ const AppLayout = ({global}) => {
     
     const [moveFlag, setMoveFlag] = useState(false);
 
+    const [copyFlag, setCopyFlag] = useState(false);
+
     return (
         <div id="container">
             <FileMoveAttendant global={[glob, setGlobal]} moveFlag={moveFlag} setMoveFlag={setMoveFlag}/>
+            <FileCopyAttendant global={[glob, setGlobal]} copyFlag={copyFlag} setCopyFlag={setCopyFlag}/>
             {
                 glob.driveMode==FS_MODE ?
                 <Container style={{background : "red", width: "100%", display: "contents"}}>
@@ -40,7 +43,7 @@ const AppLayout = ({global}) => {
                             <FileContentViewer global={[glob, setGlobal]}/>
                         </Col>
                         <Col md={2}>
-                            <ButtonsContainer global={[glob, setGlobal]} setMoveFlag={setMoveFlag}/>
+                            <ButtonsContainer global={[glob, setGlobal]} setMoveFlag={setMoveFlag} setCopyFlag={setCopyFlag}/>
                         </Col>
                     </Row>
                 </Container>
