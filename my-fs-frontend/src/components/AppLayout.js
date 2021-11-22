@@ -3,22 +3,30 @@ import AppBar from "./AppBar";
 import ButtonsContainer from "./ButtonsContainer";
 import FileContentViewer from "./FileContentViewer";
 import FileSystemViewer from "./FileSystemViewer";
-import { Container, Row, Col,Modal } from 'react-bootstrap';
-import { useState, useEffect } from "react";
+import FileMoveAttendant from "./FileMoveAttendant";
+
+import { Container, Row, Col } from 'react-bootstrap';
+import { useState } from "react";
 import { Login } from "./Login";
 import { SignIn } from "./SignIn";
 
 import { FS_MODE, SIGNIN_MODE, SIGNUP_MODE } from "../App";
 
+export const STANDARD_MODE = 0, MOVE_MODE = 1;
+
 const AppLayout = ({global}) => {
 
     const [glob, setGlobal]  = global;
+    
+    const [moveFlag, setMoveFlag] = useState(false);
 
     return (
         <div id="container">
+            <FileMoveAttendant global={[glob, setGlobal]} moveFlag={moveFlag} setMoveFlag={setMoveFlag}/>
             {
                 glob.driveMode==FS_MODE ?
                 <Container style={{background : "red", width: "100%", display: "contents"}}>
+                    
                     <Row lg={2} md={2} className="m-4">
                         <Col>
                             <AppBar global={[glob, setGlobal]}/>
@@ -32,7 +40,7 @@ const AppLayout = ({global}) => {
                             <FileContentViewer global={[glob, setGlobal]}/>
                         </Col>
                         <Col md={2}>
-                            <ButtonsContainer global={[glob, setGlobal]}/>
+                            <ButtonsContainer global={[glob, setGlobal]} setMoveFlag={setMoveFlag}/>
                         </Col>
                     </Row>
                 </Container>

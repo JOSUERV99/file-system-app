@@ -15,6 +15,7 @@ const OWN_MODE = 0,
 const FileSystemViewer = ({ global }) => {
     const [glob, setGlobal] = global;
     const [path, setPath] = useState(glob.name);
+    
 
     const [mode, setMode] = useState(OWN_MODE);
     const [selectedTab, setSelectedTab] = useState(mode == OWN_MODE ? "rootDir" : "sharedWithMeDir");

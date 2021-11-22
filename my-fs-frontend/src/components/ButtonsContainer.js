@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { STANDARD_MODE, MOVE_MODE } from "./AppLayout";
 import { Button, Container, Row, Col, Modal, Form, Alert } from "react-bootstrap";
 import {
     deleteFile,
@@ -31,7 +32,7 @@ const style = {
     paddingTop: "1%"
 };
 
-const ButtonsContainer = ({ global }) => {
+const ButtonsContainer = ({ global, setMoveFlag }) => {
     const [glob, setGlobal] = global;
 
     // modals flags
@@ -393,7 +394,7 @@ const ButtonsContainer = ({ global }) => {
                     Delete selected
                 </Button>
                 <br/>
-                <Button variant="warning" className = "my-2 w-100">
+                <Button variant="warning" className = "my-2 w-100" onClick={(e) => {e.target.value = null;setMoveFlag(true);} }>
                     <FontAwesomeIcon icon={faArrowsAlt} />
                     {` `}
                     Move
