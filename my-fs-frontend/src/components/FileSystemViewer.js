@@ -37,16 +37,24 @@ const FileSystemViewer = ({ global }) => {
         alert(e);
     };
 
+    const getUsernameRefByFileId = (fileId) => fileId;
+
+    const getFileName = (dir) => {
+        if (mode === OWN_MODE) return dir.name;
+        console.log(dir);
+        return (dir.name !== "shareWithMeDir") ? dir.name : `${dir.name} by ${getUsernameRefByFileId(dir.id)}`
+    }
+
     const mapFile = (file) => (
         <Tree.File
             id={file.id}
-            name={file.name || "(No name specified)"}
+            name={getFileName(file) || "(No name specified)"}
             extra={file.bytesSize}
             onClick={() => setFSItem(file)}
         ></Tree.File>
     );
     const mapDir = (dir) => (
-        <Tree.Folder id={dir.id} name={dir.name} onClick={() => setFSItem(dir)}>
+        <Tree.Folder id={dir.id} name={getFileName(dir)} onClick={() => setFSItem(dir)}>
             {dir.childrenDirectories.map((d) => mapDir(d))}
             {dir.files.map((f) => mapFile(f))}
         </Tree.Folder>
@@ -71,7 +79,7 @@ const FileSystemViewer = ({ global }) => {
                             {glob.selectedItem.name || "(No name specified)"}
                         </Alert>
                     )}
-                    <Tree initialExpand={true} onClick={handlePath}>
+                    <Tree initialExpand={true} onClick={handlePath} >
                         {mapDir(
                             glob.drive.rootDir
                         )}{" "}
