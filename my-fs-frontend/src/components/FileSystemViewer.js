@@ -48,8 +48,8 @@ const FileSystemViewer = ({ global }) => {
 
     return (
         <div
-            style={{ position: "fixed", x: 0, y: 0, height: "100%", zoom: "125%" }}
-            className="mt-4 mx-4"
+            style={{ position: "fixed", x: 0, y: 0, height: "100%", zoom: "120%" }}
+            className="mt-4"
         >
             <div className="mt-4"></div>
 

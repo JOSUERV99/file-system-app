@@ -1,5 +1,6 @@
 import React from "react";
 import AppBar from "./AppBar";
+import ButtonsContainer from "./ButtonsContainer";
 import FileContentViewer from "./FileContentViewer";
 import FileSystemViewer from "./FileSystemViewer";
 import { Container, Row, Col,Modal } from 'react-bootstrap';
@@ -22,12 +23,16 @@ const AppLayout = ({global}) => {
                             <AppBar global={[glob, setGlobal]}/>
                         </Col>
                     </Row>
-                    <Row lg={3} md={3} className="m-4">
-                        <Col> 
+                    <Row className="m-1">
+                        
+                        <Col md={3}> 
                             <FileSystemViewer global={[glob, setGlobal]}/>
                         </Col>
                         <Col>
                             <FileContentViewer global={[glob, setGlobal]}/>
+                        </Col>
+                        <Col md={2}>
+                            <ButtonsContainer global={[glob, setGlobal]}/>
                         </Col>
                     </Row>
                 </Container>
