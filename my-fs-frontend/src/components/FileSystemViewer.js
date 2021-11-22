@@ -19,12 +19,18 @@ const FileSystemViewer = ({ global }) => {
 
     useEffect(() => {
         setGlobal({ ...glob, selectedItem: mode == OWN_MODE ? glob.drive.rootDir : glob.drive.sharedWithMeDir });
-        return () => { };
+        return () => { };   
     }, []);
 
     const setFSItem = (item) => {
         setGlobal({ ...glob, selectedItem: item });
     };
+
+    const handleTabSelection = (k) => {
+        setSelectedTab(k); 
+        setMode(k == "rootDir" ? OWN_MODE : SHARE_MODE)
+        setGlobal({ ...glob, selectedItem: mode == OWN_MODE ? glob.drive.rootDir : glob.drive.sharedWithMeDir });
+    }
 
     const handlePath = (p) => setPath(p);
     const handleDrag = (e) => {
@@ -56,7 +62,7 @@ const FileSystemViewer = ({ global }) => {
             <Tabs
                 id="controlled-tab-example"
                 activeKey={selectedTab}
-                onSelect={(k) => setSelectedTab(k)}
+                onSelect={(k) => handleTabSelection(k)}
                 className="mb-3"
             >
                 <Tab eventKey="rootDir" title="Home" >
