@@ -9,7 +9,7 @@ export const EDIT_MODE = 10, EXPLORER_MODE = 11;
 const App = () => {
 
   const [global, setGlobal] = useState({
-    drive : null, username : '', driveMode : SIGNIN_MODE, selectedItem : null, password : null, fileMode : EDIT_MODE
+    drive : null, username : '', driveMode : SIGNIN_MODE, selectedItem : null, password : null, fileMode : EDIT_MODE, moveFlag : true
   });
 
   return (

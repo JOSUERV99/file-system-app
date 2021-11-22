@@ -14,7 +14,7 @@ export const shareFile = (buddyUserName, ownerUserName, fileId) => axios.post(`$
 export const getSharedFiles = (username) => axios.get(`${getUrl()}/drive/getSharedFiles/${username}`);
 
 export const modifyFileContent = (username, fileId) => axios.post(`${getUrl()}/modifyFileContent/${username}/${fileId}`);
-export const moveFile = (username, fileId, oldDirId, newDirId) => axios.post(`${getUrl()}/moveFile/${username}/${fileId}/${oldDirId}/${newDirId}`);
+export const moveFile = (username, fileId, newDirId) => axios.post(`${getUrl()}/file/moveFile/${username}/${fileId}/${newDirId}`);
 
 export const downloadFile = (username, fileId) => axios.post(`${getUrl()}/file/downloadFile/${username}/${fileId}`);
 export const newDirectory =  (username, dirName, dirId) => axios.post(`${getUrl()}/dir/createDirectory/${username}/${dirName}/${dirId}`);
