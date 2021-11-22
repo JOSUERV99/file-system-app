@@ -189,8 +189,9 @@ const AppBar = ({ global }) => {
             : `The directory ${newFileName}  wasn\'t created`
         );
         setAction("Create File");
-        setShow(true);
-		setNewFileName("New File")
+        setShowNewFile(false);
+		setShow(true);
+		setNewFileName("New File");
         return getDrive(username, password);
       })
       .then(({ data }) => {
