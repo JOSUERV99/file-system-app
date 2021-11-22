@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import { STANDARD_MODE, MOVE_MODE } from "./AppLayout";
 import { Button, Container, Row, Col, Modal, Form, Alert } from "react-bootstrap";
 import {
     deleteFile,
@@ -8,18 +7,18 @@ import {
     newDirectory,
     newFile,
     modifyFile,
+    getUsers,
+    shareFile,
 } from "../api-calls/UserCall";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast } from 'bulma-toast'
 import {
     faAmericanSignLanguageInterpreting,
     faArchive,
-    faArrowAltCircleDown,
     faArrowsAlt,
     faCopy,
     faDoorClosed,
     faFile,
-    faFileArchive,
     faScroll,
     faShare,
     faTrash,
@@ -32,7 +31,7 @@ const style = {
     paddingTop: "1%"
 };
 
-const ButtonsContainer = ({ global, setMoveFlag }) => {
+const ButtonsContainer = ({ global, setMoveFlag, setCopyFlag }) => {
     const [glob, setGlobal] = global;
 
     // modals flags
@@ -41,9 +40,10 @@ const ButtonsContainer = ({ global, setMoveFlag }) => {
     const [showViewProperties, setShowViewProperties] = useState(false);
     const [showNewFile, setShowNewFile] = useState(false);
     const [newFileName, setNewFileName] = useState("New File");
-
     const [newDirectoryName, setNewDirectoryName] = useState("Nueva Carpeta");
-
+    const [shareFileGui, setShareFileGui] = useState(false);
+    const [userNames, setUserNames] = useState({});
+    const [userNameSelected, setUserNameSelected] = useState("");
     const [message, setMessage] = useState("");
     const [action, setAction] = useState("");
 
@@ -151,20 +151,13 @@ const ButtonsContainer = ({ global, setMoveFlag }) => {
     };
 
     const handleNewDirectory = () => {
+        setShowDir(false);
         const username = glob.username,
             password = glob.password,
             dirId = glob.selectedItem.id;
         newDirectory(username, newDirectoryName, dirId)
             .then(({ data }) => {
                 data.success ? showNotification(`The directory ${newDirectoryName} was created`, "is-success") : showNotification(`The directory ${newDirectoryName}  wasn\'t created`, "is-danger")
-
-                // setMessage(
-                //   data.success
-                //     ? `The directory ${newDirectoryName} was created`
-                //     : `The directory ${newDirectoryName}  wasn\'t created`
-                // );
-                // setAction("Create directory");
-                // setShow(true);
                 return getDrive(username, password);
             })
             .then(({ data }) => {
@@ -188,13 +181,6 @@ const ButtonsContainer = ({ global, setMoveFlag }) => {
         setShowNewFile(false);
         newFile(username, dirId, newFileName, "")
             .then(({ data }) => {
-                // setMessage(
-                //   data.success
-                //     ? `The file  ${newFileName} was created`
-                //     : `The directory ${newFileName}  wasn\'t created`
-                // );
-                // setAction("Create File");
-                // setShow(true);
                 setShowNewFile(false);
                 data.success ? showNotification(`The directory ${newDirectoryName} was created`, "is-success") : showNotification(`The directory ${newDirectoryName}  wasn\'t created`, "is-danger")
                 setNewFileName("New File");
@@ -220,14 +206,7 @@ const ButtonsContainer = ({ global, setMoveFlag }) => {
             dirId = glob.selectedItem.id;
         modifyFile(username, dirId, glob.selectedItem.content)
             .then(({ data }) => {
-                data.success ? showNotification(`The file  ${newFileName} was saved`, "is-success") : showNotification(`The directory ${newFileName}  wasn\'t saved`, "is-danger")
-                // setMessage(
-                //   data.success
-                //     ? `The file  ${newFileName} was updated`
-                //     : `The directory ${newFileName}  wasn\'t updated`
-                // );
-                // setAction("MOdify File");
-                // setShow(true);
+                data.success ? showNotification(`The file  ${newFileName} was saved`, "is-success") : showNotification(`The directory ${newFileName}  wasn\'t saved`, "is-danger");
                 setNewFileName("New File")
                 return getDrive(username, password);
             })
@@ -245,7 +224,55 @@ const ButtonsContainer = ({ global, setMoveFlag }) => {
             });
 
     };
+    
+    const refreshAllUsers = () => {
+        const username = glob.username;
+        getUsers()
+            .then(({ data }) => {
+                delete data.object[username];
+                data.success ? showNotification(`${Object.keys(data.object).length} users available`) : showNotification("There was a problem fetching all users", "is-danger")
+                setUserNames(data.object);
+            })
+            .catch(() => {
+                showNotification("There was an error creating the file, please try again", "is-danger")
+            });
+    };
 
+    const handleSelectUser = (user) => {
+        setUserNameSelected(user);
+    };
+
+    const handleShareFile = () => {
+        setShareFileGui(false);
+        const username = glob.username,
+              password = glob.password,
+              fileId = glob.selectedItem.id;
+
+        if(!userNames[userNameSelected])
+        {
+            showNotification("Debe seleccionar un usuario valido", "is-danger");
+        }else{
+            shareFile(userNameSelected, username, fileId)
+            .then(({ data }) => {
+                data.success ? showNotification("The file was share", "is-success") : showNotification("The file wasn\'t share", "is-danger")
+                return getDrive(username, password);
+            })
+            .then(({ data }) => {
+                setGlobal({
+                    ...glob,
+                    driveMode: FS_MODE,
+                    drive: data.object,
+                    username,
+                    password,
+                });
+            })
+            .catch(() => {
+                showNotification("There was an error sharing the file, please try again", "is-danger")
+            });
+        }
+
+        setUserNameSelected("");
+    };
     return (
         <div style={style} className="m-4 mt-6">
             <input type="file" ref={inputFile} style={{ display: 'none' }} onChange={(e) => handleUploadFile(e)} />
@@ -363,10 +390,35 @@ const ButtonsContainer = ({ global, setMoveFlag }) => {
                 </Modal.Footer>
             </Modal>
 
-
-            {/* <Row className="mt-2"> */}
-
-            {" "}
+            <Modal show={shareFileGui} onHide={() => setShareFileGui(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Share File</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form.Group as={Col} controlId="formGridEmail">
+                        <Form.Label>Select the user:</Form.Label>
+                        <Form.Select aria-label="Default select" 
+                            onChange={(e)=>{handleSelectUser(e.target.value)}}
+                            defaultValue={null}
+                            
+                            >
+                        <option>Choose a user</option>
+                        {Object.keys(userNames).map( user => (
+                            <option value={`${user}`} >{user}</option>
+                        ))}        
+                        
+                        </Form.Select>
+                    </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="success" onClick={() => handleShareFile()}>
+                        Share
+                    </Button>
+                    <Button variant="secondary" onClick={() => setShareFileGui(false)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <div className="text-left mt-2">
                 <Button variant="success" className = "my-2 w-100"
                     disabled={glob.selectedItem?.type != "directory"}
@@ -400,13 +452,17 @@ const ButtonsContainer = ({ global, setMoveFlag }) => {
                     Move
                 </Button>
                 <br/>
-                <Button variant="warning" className = "my-2 w-100">
+                <Button variant="warning" className = "my-2 w-100"
+                    disabled={glob.selectedItem?.type == "directory"}
+                    onClick={() => {refreshAllUsers(); setShareFileGui(true);}}>
                     <FontAwesomeIcon icon={faShare} />
                     {` `}
                     Share
                 </Button>
                 <br/>
-                <Button variant="warning" className = "my-2 w-100">
+                <Button variant="warning" className = "my-2 w-100" 
+                    disabled={glob.selectedItem?.type == "directory"}
+                    onClick={(e) => {e.target.value = null;setCopyFlag(true);} }>
                     <FontAwesomeIcon icon={faCopy} />
                     {` `}
                     Copy

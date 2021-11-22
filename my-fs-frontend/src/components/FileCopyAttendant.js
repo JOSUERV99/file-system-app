@@ -4,14 +4,14 @@ import Tree from "@geist-ui/react/esm/tree";
 import { Button, Modal, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDoorClosed } from "@fortawesome/free-solid-svg-icons";
-import { getDrive, moveFile } from "../api-calls/UserCall";
-import { MOVE_MODE } from "./AppLayout";
+import { getDrive, copyFile } from "../api-calls/UserCall";
+import { COPY_MODE } from "./AppLayout";
 
-const FileMoveAttendant = ({ global, moveFlag, setMoveFlag }) => {
+const FileCopyAttendant = ({ global, copyFlag, setCopyFlag }) => {
   const [glob, setGlobal] = global;
 
   const [path, setPath] = useState(glob.name);
-  const [fileToMove, setFileToMove] = useState(glob.selectedItem);
+  const [fileToCopy, setFileToCopy] = useState(glob.selectedItem);
   const [dirTarget, setDirTarget] = useState(null);
   const [show, setShow] = useState(true);
 
@@ -27,7 +27,7 @@ const FileMoveAttendant = ({ global, moveFlag, setMoveFlag }) => {
 
   const handlePath = (p) => setPath(p);
 
-  const handleMove = () => {
+  const handelCopy = () => {
 
     const username = glob.username;
     const fileId = glob.selectedItem.id;
@@ -37,10 +37,10 @@ const FileMoveAttendant = ({ global, moveFlag, setMoveFlag }) => {
     if (dirTarget == null && glob?.selectedItem !== null) {
         alert('asdasdasd');
     };
-
-    moveFile(username, fileId, newDirId)
+    //(username, fileId, virtualDirDestination)
+    copyFile(username, fileId, newDirId)
       .then(({ data }) => {
-        setMoveFlag(false);
+        setCopyFlag(false);
         return getDrive(username, password);
       })
       .then(({ data }) => {
@@ -72,7 +72,7 @@ const FileMoveAttendant = ({ global, moveFlag, setMoveFlag }) => {
 
   return (
     <div id="file-mover">
-      {moveFlag && glob.drive && (
+      {copyFlag && glob.drive && (
         <Modal show={show} onHide={() => setShow(false)}>
           <Modal.Header closeButton>
             <Modal.Title>Move files</Modal.Title>
@@ -81,22 +81,22 @@ const FileMoveAttendant = ({ global, moveFlag, setMoveFlag }) => {
             {" "}
             <Alert variant="primary">
               {" "}
-              Select a dir to move the file: {glob.selectedItem?.name || "xd"}
+              Select a dir to copy the file: {glob.selectedItem?.name || "xd"}
             </Alert>
             {dirTarget && <Alert variant="primary">
               {" "}
-              Moving to: {dirTarget?.name || "xd"}
+              Copying to: {dirTarget?.name || "xd"}
             </Alert>}
             <Tree initialExpand={true} onClick={handlePath}>
               {mapDir(glob.drive.rootDir)}{" "}
             </Tree>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={(e) => {e.target.value = null; handleMove();}} disabled={dirTarget === null}>
+            <Button variant="secondary" onClick={(e) => {e.target.value = null; handelCopy();}} disabled={dirTarget === null}>
               <FontAwesomeIcon icon={faDoorClosed} />
-              Move file
+              Copy file
             </Button>
-            <Button variant="secondary" onClick={() => {setShow(false); setMoveFlag(false);}}>
+            <Button variant="secondary" onClick={() => {setShow(false); setCopyFlag(false);}}>
               <FontAwesomeIcon icon={faDoorClosed} />
               Close
             </Button>
@@ -107,4 +107,4 @@ const FileMoveAttendant = ({ global, moveFlag, setMoveFlag }) => {
   );
 };
 
-export default FileMoveAttendant;
+export default FileCopyAttendant;
