@@ -42,6 +42,7 @@ const FileSystemViewer = ({ global }) => {
     }
 
     const handleTabSelection = (k) => {
+        glob.selectedItem = null //NO SE SI ESTO ESTE BIEN
         setSelectedTab(k);
         if(k == "sharedWithMe"){
             const username = glob.username
@@ -128,7 +129,7 @@ const FileSystemViewer = ({ global }) => {
                             {glob.selectedItem.name || "(No name specified)"}
                         </Alert>
                     )}
-                    <Tree initialExpand={true} onClick={handlePath}>
+                    <Tree style = {{display: "inline-block"}} initialExpand={true} onClick={handlePath}>
                         {mapDir(
                             glob.drive.sharedWithMeDir
                         )}{" "}
