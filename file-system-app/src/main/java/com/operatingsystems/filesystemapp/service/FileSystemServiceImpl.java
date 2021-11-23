@@ -98,6 +98,9 @@ public class FileSystemServiceImpl implements FileSystemService {
     public ActionResult copyFromVirtualToReal(String username, String fileId, String localPath) {
         var drive = JSONUtils.getFullDrive(username);
         Object fileorDirectory = searchFile(drive.getRootDir(), fileId);
+        if(fileorDirectory == null){
+            fileorDirectory = searchFile(drive.getSharedWithMeDir(), fileId);
+        }
         boolean success;
         if(fileorDirectory instanceof Directory){
             Directory dir = ((Directory) fileorDirectory);
