@@ -104,7 +104,12 @@ public class FileSystemServiceImpl implements FileSystemService {
         boolean success;
         if(fileorDirectory instanceof Directory){
             Directory dir = ((Directory) fileorDirectory);
-            success = downloadFile(dir, localPath + drive.getName() + "/");
+            try {
+                createRealDirectory(localPath + "/" + drive.getName() + "/");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            success = downloadFile(dir, localPath + "/" + drive.getName() + "/");
         }else{
             PlainTextFile file = ((PlainTextFile) fileorDirectory);
             try {
