@@ -183,8 +183,9 @@ public class FileSystemServiceImpl implements FileSystemService {
         }
         if (fileToChange instanceof PlainTextFile){
             ((PlainTextFile) fileToChange).setContent(newFileModified.getContent());
-            JSONUtils.saveDriveOrReplace(drive);
             ((PlainTextFile) fileToChange).setModifiedDate(LocalDateTime.now().toString());
+            ((PlainTextFile) fileToChange).setBytesSize(String.valueOf(((PlainTextFile) fileToChange).getContent().length()));
+            JSONUtils.saveDriveOrReplace(drive);
             updateOwnerFile(drive);
             return ActionResult.instance().setSuccess(true).setObject(fileToChange);
         }

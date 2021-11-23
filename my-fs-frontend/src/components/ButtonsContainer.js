@@ -157,7 +157,7 @@ const ButtonsContainer = ({ global, setMoveFlag, setCopyFlag }) => {
             dirId = glob.selectedItem.id;
         newDirectory(username, newDirectoryName, dirId)
             .then(({ data }) => {
-                data.success ? showNotification(`The directory ${newDirectoryName} was created`, "is-success") : showNotification(`The directory ${newDirectoryName}  wasn\'t created`, "is-danger")
+                data.success ? showNotification(`The directory ${data.object.name} was created`, "is-success") : showNotification(`The directory wasn\'t created`, "is-danger")
                 return getDrive(username, password);
             })
             .then(({ data }) => {
@@ -182,7 +182,7 @@ const ButtonsContainer = ({ global, setMoveFlag, setCopyFlag }) => {
         newFile(username, dirId, newFileName, "")
             .then(({ data }) => {
                 setShowNewFile(false);
-                data.success ? showNotification(`The directory ${newDirectoryName} was created`, "is-success") : showNotification(`The directory ${newDirectoryName}  wasn\'t created`, "is-danger")
+                data.success ? showNotification(`The directory ${data.object.name} was created`, "is-success") : showNotification(`The directory wasn\'t created`, "is-danger")
                 setNewFileName("New File");
                 return getDrive(username, password);
             })
@@ -206,7 +206,7 @@ const ButtonsContainer = ({ global, setMoveFlag, setCopyFlag }) => {
             dirId = glob.selectedItem.id;
         modifyFile(username, dirId, glob.selectedItem.content)
             .then(({ data }) => {
-                data.success ? showNotification(`The file  ${newFileName} was saved`, "is-success") : showNotification(`The directory ${newFileName}  wasn\'t saved`, "is-danger");
+                data.success ? showNotification(`The file  ${data.object.name} was saved`, "is-success") : showNotification(`The directory wasn\'t saved`, "is-danger");
                 setNewFileName("New File")
                 return getDrive(username, password);
             })
