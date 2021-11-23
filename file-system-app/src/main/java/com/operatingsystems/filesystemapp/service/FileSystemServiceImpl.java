@@ -22,16 +22,13 @@ import java.util.UUID;
 @Service
 public class FileSystemServiceImpl implements FileSystemService {
 
-
-    @Override
-    public String getFileContent(final String username, final String fileId) {
-        return null;
-    }
-
     @Override
     public ActionResult getFileProperties(String username, String fileId) {
         var drive = JSONUtils.getFullDrive(username);
         Object fileToReturn = searchFile(drive.getRootDir(),fileId);
+        if(fileToReturn == null){
+            fileToReturn = searchFile(drive.getSharedWithMeDir(), fileId);
+        }
         if(fileToReturn instanceof PlainTextFile) return ActionResult.instance().setSuccess(true).setObject(fileToReturn);
         return ActionResult.instance().setSuccess(false).setObject(fileToReturn);
     }
@@ -41,9 +38,13 @@ public class FileSystemServiceImpl implements FileSystemService {
         var drive = JSONUtils.getFullDrive(username);
         Object result = searchAndRemoveFile(drive.getRootDir(), fileId, null);
         if(result == null){
+            result = searchAndRemoveFile(drive.getSharedWithMeDir(), fileId, null);
+        }
+        if(result == null){
             return ActionResult.instance().setSuccess(false);
         }
         JSONUtils.saveDriveOrReplace(drive);
+        updateOwnerFile(drive);
         return ActionResult.instance().setSuccess(true).setObject(result);
     }
     public Object searchAndRemoveFile(Directory dir, String fileId, Directory parentDir){
@@ -124,6 +125,12 @@ public class FileSystemServiceImpl implements FileSystemService {
         var drive = JSONUtils.getFullDrive(username);
         Directory newDir = ((Directory)searchFile(drive.getRootDir(), virtualDirDestination));
         Object fileToMove = searchFile(drive.getRootDir(), fileId);
+        if(newDir == null){
+            newDir =((Directory)searchFile(drive.getSharedWithMeDir(), virtualDirDestination));
+        }
+        if(fileToMove == null){
+            fileToMove = searchFile(drive.getSharedWithMeDir(), fileId);
+        }
         if(newDir != null && fileToMove != null){
             if(fileToMove instanceof Directory){
                 newDir.getChildrenDirectories().add((Directory)fileToMove);
@@ -131,6 +138,7 @@ public class FileSystemServiceImpl implements FileSystemService {
                 newDir.getFiles().add((PlainTextFile)fileToMove);
             }
             JSONUtils.saveDriveOrReplace(drive);
+            updateOwnerFile(drive);
             return ActionResult.instance().setSuccess(true).setObject(newDir);
         }
         return ActionResult.instance().setSuccess(false).setObject(null);
@@ -150,10 +158,14 @@ public class FileSystemServiceImpl implements FileSystemService {
         newFile.setId(UUID.randomUUID().toString());
         var drive = JSONUtils.getFullDrive(username);
         Object dirToInsert = searchFile(drive.getRootDir(), dirId);
+        if(dirToInsert == null){
+            dirToInsert = searchFile(drive.getSharedWithMeDir(), dirId);
+        }
         if (dirToInsert instanceof Directory){
             Directory directory = ((Directory) dirToInsert);
             directory.getFiles().add(newFile);
             JSONUtils.saveDriveOrReplace(drive);
+            updateOwnerFile(drive);
             return ActionResult.instance().setSuccess(true).setObject(newFile);
         }
         return ActionResult.instance().setSuccess(false).setObject(dirToInsert);
@@ -176,6 +188,7 @@ public class FileSystemServiceImpl implements FileSystemService {
         return ActionResult.instance().setSuccess(false).setObject(fileToChange);
     }
 
+    @Override
     public void updateOwnerFile(Drive drive){
         for(FileReference fileReference : drive.getSharedReferences()){
             var ownerDrive = JSONUtils.getFullDrive(fileReference.getOwnerUsername());
@@ -199,20 +212,24 @@ public class FileSystemServiceImpl implements FileSystemService {
     @Override
     public ActionResult moveFile(final String username, final String fileId, final String newDirId){
         var drive = JSONUtils.getFullDrive(username);
-//        Directory oldDir = ((Directory)searchFile(drive.getRootDir(), oldDirId));
         Directory newDir = ((Directory)searchFile(drive.getRootDir(), newDirId));
         Object fileToMove = searchFile(drive.getRootDir(), fileId);
+        if(newDir == null){
+            newDir =((Directory)searchFile(drive.getSharedWithMeDir(), newDirId));
+        }
+        if(fileToMove == null){
+            fileToMove = searchFile(drive.getSharedWithMeDir(), fileId);
+        }
         if(newDir != null && fileToMove != null){
             if(fileToMove instanceof Directory){
                 searchAndRemoveFile(drive.getRootDir(), fileId, null);
                 newDir.getChildrenDirectories().add((Directory)fileToMove);
-//                oldDir.getChildrenDirectories().remove((Directory)fileToMove);
             }else if(fileToMove instanceof PlainTextFile){
                 searchAndRemoveFile(drive.getRootDir(), fileId, null);
                 newDir.getFiles().add((PlainTextFile)fileToMove);
-//                oldDir.getFiles().remove((PlainTextFile)fileToMove);
             }
             JSONUtils.saveDriveOrReplace(drive);
+            updateOwnerFile(drive);
             return ActionResult.instance().setSuccess(true).setObject(newDir);
         }
         return ActionResult.instance().setSuccess(false).setObject(null);

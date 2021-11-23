@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public interface FileSystemService {
 
-    String getFileContent(final String username, final String fileId);
+    void updateOwnerFile(Drive drive);
 
     ActionResult getFileProperties(final String username, final String fileId);
 
@@ -35,6 +35,8 @@ public interface FileSystemService {
     ActionResult modifyFileContent(final String username, final String fileId, PlainTextFile newFileModified);
 
     ActionResult moveFile(final String username, final String fileId, final String newDirId);
+
+
 
     boolean downloadFile(Directory dir, String path);
 
