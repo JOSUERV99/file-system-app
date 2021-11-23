@@ -57,11 +57,14 @@ public class DirectoryServiceImpl implements DirectoryService {
         var newDir = Directory.instance().setId(UUID.randomUUID().toString()).setName(dirName);
         var drive = JSONUtils.getFullDrive(username);
         Object dirToInsert = fileSystemServiceImpl.searchFile(drive.getRootDir(), dirId);
-
+        if(dirToInsert == null){
+            dirToInsert = fileSystemServiceImpl.searchFile(drive.getSharedWithMeDir(), dirId);
+        }
         if (dirToInsert instanceof Directory){
             Directory directory = ((Directory) dirToInsert);
             directory.getChildrenDirectories().add(newDir);
             JSONUtils.saveDriveOrReplace(drive);
+            fileSystemServiceImpl.updateOwnerFile(drive);
             return ActionResult.instance().setSuccess(true).setObject(newDir);
         }
 
