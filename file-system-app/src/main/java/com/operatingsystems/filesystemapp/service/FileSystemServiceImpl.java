@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.zeroturnaround.zip.ZipUtil;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -105,11 +107,12 @@ public class FileSystemServiceImpl implements FileSystemService {
         if(fileorDirectory instanceof Directory){
             Directory dir = ((Directory) fileorDirectory);
             try {
-                createRealDirectory(localPath + "/" + drive.getName() + "/");
+                createRealDirectory(localPath + "/" + dir.getName() + "/");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            success = downloadFile(dir, localPath + "/" + drive.getName() + "/");
+            success = downloadFile(dir, localPath + "/" + dir.getName() + "/");
+            ZipUtil.pack(new File(localPath + "/" + dir.getName() + "/"), new File(localPath+"/"+dir.getName()+".zip"));
         }else{
             PlainTextFile file = ((PlainTextFile) fileorDirectory);
             try {
