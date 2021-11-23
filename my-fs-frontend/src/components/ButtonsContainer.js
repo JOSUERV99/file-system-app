@@ -274,7 +274,7 @@ const ButtonsContainer = ({ global, setMoveFlag, setCopyFlag }) => {
         setUserNameSelected("");
     };
     return (
-        <div style={style} className="m-4 mt-6">
+        <div style={style} className="m-2 mt-6">
             <input type="file" ref={inputFile} style={{ display: 'none' }} onChange={(e) => handleUploadFile(e)} />
             <Modal show={show} onHide={() => setShow(false)}>
                 <Modal.Header closeButton>
