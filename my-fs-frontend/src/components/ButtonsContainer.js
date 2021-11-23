@@ -453,7 +453,6 @@ const ButtonsContainer = ({ global, setMoveFlag, setCopyFlag }) => {
                 </Button>
                 <br/>
                 <Button variant="warning" className = "my-2 w-100"
-                    disabled={glob.selectedItem?.type == "directory"}
                     onClick={() => {refreshAllUsers(); setShareFileGui(true);}}>
                     <FontAwesomeIcon icon={faShare} />
                     {` `}
@@ -461,7 +460,6 @@ const ButtonsContainer = ({ global, setMoveFlag, setCopyFlag }) => {
                 </Button>
                 <br/>
                 <Button variant="warning" className = "my-2 w-100" 
-                    disabled={glob.selectedItem?.type == "directory"}
                     onClick={(e) => {e.target.value = null;setCopyFlag(true);} }>
                     <FontAwesomeIcon icon={faCopy} />
                     {` `}
