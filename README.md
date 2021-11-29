@@ -9,14 +9,14 @@
    - Axios
    - FontAwesome
    - Geist UI
-   - 
+
 ### Backend
 #### [Spring Boot](https://spring.io/projects/spring-boot) using:
    - FasterXML
    - Jackson
    - Lombok
    - Hibernate
-   - 
+
 ## Authors
    - [Andrew](https://github.com/AndrewGutierrezCastro)
    - [Madrigal](https://github.com/madri308)
