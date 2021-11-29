@@ -1,6 +1,6 @@
 <hr>
 <h1 align="center">File System App</h1>
-<hr>
+
 <p align="center"> A client-server application that manage a personal file system for each user where they can store, share, create, edit, ... plain text files using an web app (Spring Boot & React) </p>
 <hr>
 <img src="https://github.com/JOSUERV99/file-system-app/blob/main/ss.jpg" alt="App screenshoot">
